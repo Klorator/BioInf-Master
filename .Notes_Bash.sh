@@ -3,6 +3,8 @@
     # $ which bash
 #!/usr/bin/bash
 
+# Cheat sheet: https://devhints.io/bash
+
 # To be able to run a file
     # chmod modifies the permissions of a file for the current user
     # u+x adds execution rights to current user
@@ -15,7 +17,7 @@
     # ./.Notes_Bash.sh
 
 # Change working directory
-    # cd /c/"Program Files"/"R Projects"/BioInf-Master
+    # cd /c/Programming/Projects/BioInf-Master
 
 # Directory paths
     # ~ refers to home dir
@@ -30,6 +32,20 @@
 # Print todays date (`date` is a built in constant?)
     echo "Today is " `date`
 
+# Assign variable with no spaces! & use them with $ prefix
+    my_text="string"
+    echo "$my_text"
+
+    my_int=25
+    echo "$my_int"
+
+# Always use variables inside ""
+    name="Rasmus"
+    echo "Double quotes: Hello $name"
+    echo 'Single quotes: Hello $name'
+
+# List all files & folders in directory
+    ls .
 echo -e "\nenter the path to directory"
 read the_path
 
