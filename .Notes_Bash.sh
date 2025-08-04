@@ -28,6 +28,8 @@
 
 # Print to terminal
     echo "Hello scripting"
+    # -e allows for escape characters, like \n for new line
+    echo -e "----------\nHello user\n----------"
 
 # Print todays date (`date` is a built in constant?)
     echo "Today is " `date`
@@ -36,9 +38,36 @@
     my_text="string"
     echo "$my_text"
 
+    # Can assign integers (used for text manipulation, not math?)
     my_int=25
     echo "$my_int"
 
+    # Parameter expansion with {} (modifications)
+    long_string="This is a long text message."
+    echo "${long_string}"
+        # Substitution
+        echo "${long_string/long/very long}"
+
+        # Print n characters from string
+        n_length=7
+        echo "${long_string:0:n_length}"
+
+        # Print n characters starting from 5 (not characters 5 to n_length!)
+        echo "${long_string:5:n_length}"
+
+        # Skip first n characters
+        echo "${long_string: -9}"
+
+        # String length
+        echo "${#long_string}"
+
+        # Indirection
+        long_string_indirect="long_string"
+        echo "${!long_string_indirect}"
+
+        # Default value (no spaces), works with 'var=' (returns null) & 'var=""' (empty)
+        echo "${missing:-"DefaultIfMissing"}"
+    
 # Always use variables inside ""
     name="Rasmus"
     echo "Double quotes: Hello $name"
@@ -46,8 +75,10 @@
 
 # List all files & folders in directory
     ls .
-echo -e "\nenter the path to directory"
-read the_path
+    # Stuff that starts with "." are hidden but -a shows all files
+    ls -a .
 
-echo -e "\n you path has the following files and folders: "
-ls $the_path
+# Wait for text input from user and store in variable
+    echo -e "\nEnter a fruit"
+    read fruit
+    echo -e "\n You entered: $fruit"
