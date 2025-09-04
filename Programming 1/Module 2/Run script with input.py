@@ -1,6 +1,6 @@
 # Module 2 exercise
 
-# # 1. Temperature conversion ----
+# # 1.1 Temperature conversion ----
 #     # Get user input
 # degrees_farenheit = input(prompt = "Degrees Fareheit: ")
 #     # Coerce to numeric
@@ -13,7 +13,7 @@
 # ###############################################
 
 
-# # 2. Accrued intrest on capital
+# # 1.2 Accrued intrest on capital
 #     # Get user input
 # capital_SEK = input(prompt = "Investment capital (SEK): ")
 # interest_rate_percent = input(prompt = "Interest rate in %: ")
@@ -32,4 +32,51 @@
 # ####################################
 
 
-# 
+# # 2.1 Input list and count even numbers
+# numbers = []  # En tom lista
+# print('Mata in positiva tal. Avbryt med 0')
+# x = int(input('Första: '))
+# while x > 0:
+#     numbers.append(x)
+#     x = int(input('Nästa: '))
+# print('Inmatad lista: ', numbers)
+#     ## Count even numbers
+# i = 0
+# count_even = 0
+# while i < len(numbers):
+#     if numbers[i] % 2 == 0:
+#         count_even += 1
+#     i += 1
+# #########################################
+
+# # 2.2 Enter positive number plz
+# x = -1
+# tries = 0
+# while x < 0:
+#     ## Ask for positive number
+#     x = int(input(prompt = 'Enter positive number: '))
+#     tries += 1
+#     ## Check number
+#     if x >= 0 and tries > 3:
+#         print("Finally!")
+#     elif x >= 0:
+#         print("OK")
+# ############################################
+
+# # 2.3 Guess the number
+# import random  # Random package
+# number = random.randint(1, 5)  # Random number between 1 and 100
+# guess = 0
+# while guess != number:
+#     guess = int(input('Guess: '))
+#     if guess < number:
+#         print('Too small')
+#     elif guess > number:
+#         print('Too large!')
+#     elif guess == number:
+#         print('Correct!')
+# ###########################################
+
+# 2.4 power-of is lava
+number = 5
+

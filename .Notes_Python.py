@@ -51,7 +51,12 @@ hypotenuse = math.sqrt(25)
 math.pi
 math.e
 
+import random # For random numbers etc.
+number = random.randint(1, 100)
 
+# Bool
+honest = True
+fake = False
 
 # List
 my_list = [1, 2, "A", "B"]
@@ -79,4 +84,38 @@ elif x == y:
 else:
     print(f"{x} smaller than {y}")
 
+    ## and, or, not
+if x < 6 and x > 4:
+    print(x)
+elif x == 5 or y == 5:
+    print(x, y)
+elif x != 10:
+    print(y)
+
+age = 15
+teenager = 12 < age < 20
+print(teenager)
+
+# Loops
+    ## While loop
+n = 6
+i = 1
+n_factorial = 1
+while i <= n:
+    n_factorial *= i
+    i += 1
+    if i > 100:
+        print("We have gone too far!")
+        break
+print(f"{n}! = {n_factorial}")
+
+    ## For loop
+n_factorial = 1
+for i in range(1, n + 1):
+    n_factorial *= i
+print(f"{n}! = {n_factorial}")
+
+vec = ["A", "B", "C"]
+for letter in vec:
+    print(letter)
 
