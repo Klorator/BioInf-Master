@@ -69,3 +69,14 @@ float('3.5')
 list("abc") # Separates the characters! x = ['a', 'b', 'c']
 
 
+# If-statement
+x = 5
+y = 3
+if x > y:
+    print(f'{x} larger than {y}')
+elif x == y:
+    print(f"{x} equals {y}")
+else:
+    print(f"{x} smaller than {y}")
+
+
