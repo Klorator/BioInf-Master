@@ -42,7 +42,7 @@ print("I like", MusicType)
 echo_this = input(prompt = "User input: ")
 print(echo_this)
 
-    ## Import modules & functions
+    ## Import modules & functions & methods
 # import [module] # imports entire module
 # from [module] import [function] # imports function
 
@@ -53,6 +53,13 @@ math.e
 
 import random # For random numbers etc.
 number = random.randint(1, 100)
+
+    ## Function vs methods: methods *might* modify the object, while functions don't
+x = [3, 1, 2]
+print(sorted(x)) # Function
+print(x)
+x.sort() # Method
+print(x)
 
 # Bool
 honest = True

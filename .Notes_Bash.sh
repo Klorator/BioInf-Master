@@ -23,6 +23,45 @@
     # ~ refers to home dir
     # . refers to current dir
     # .. refers to parent dir
+    # Absolute path start with /
+
+# find full absolute path to current dir
+pwd
+
+# List all files & folders in directory
+    ls .
+    # Stuff that starts with "." are hidden but -a shows all files
+    ls -a .
+    # long format -l, same as ll
+    ls -l
+    ll
+    # list files in other dir
+    ll ..
+    # * wildcard
+    ll .. *.txt
+
+# Moving around
+    # cd [dir] # move into dir
+    # cd .. # move up a dir
+    # cd ../[dir] # moving around folders is fluid
+
+# File management, assumes relative path
+    # use tab completion, pressing tab more times prints possible options
+    # cp [name of original] [name of copy] # copy file
+    # mv [name of original] [name of copy] # move file (changes the files adress on harddrive)
+
+    # less [file name] # read file content, move up/down with arrows, exit with Q
+    # head [options] [file name] # print first 10 rows, -n = n lines
+    # tail [options] [file name] # print first 10 rows, -n = n lines
+
+    # nano [file name] # open editor, ^ means hold ctrl
+
+    # rm [file name] # remove file, deletes immedietly
+
+# Info
+man ls # documentation
+top # view processes running on the computer
+
 
 ######################################################################
 
@@ -72,11 +111,6 @@
     name="Rasmus"
     echo "Double quotes: Hello $name"
     echo 'Single quotes: Hello $name'
-
-# List all files & folders in directory
-    ls .
-    # Stuff that starts with "." are hidden but -a shows all files
-    ls -a .
 
 # Wait for text input from user and store in variable
     echo -e "\nEnter a fruit"
