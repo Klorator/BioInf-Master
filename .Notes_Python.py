@@ -126,3 +126,7 @@ vec = ["A", "B", "C"]
 for letter in vec:
     print(letter)
 
+# Functions
+def my_func(arg1, arg2):
+    print(arg1, arg2)
+    return "done"
