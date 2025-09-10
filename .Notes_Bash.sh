@@ -45,9 +45,13 @@ pwd
     # cd .. # move up a dir
     # cd ../[dir] # moving around folders is fluid
 
+    # mkdir [dir] # create folder
+    # rmdir [dir] # can only remove empty folders
+
 # File management, assumes relative path
     # use tab completion, pressing tab more times prints possible options
     # cp [name of original] [name of copy] # copy file
+        # -r to copy recursively = all subfolders & files
     # mv [name of original] [name of copy] # move file (changes the files adress on harddrive)
 
     # less [file name] # read file content, move up/down with arrows, exit with Q
@@ -57,6 +61,38 @@ pwd
     # nano [file name] # open editor, ^ means hold ctrl
 
     # rm [file name] # remove file, deletes immedietly
+        # -r remove recursively, can delete folder and everythin in it!
+
+    # tar -xzvf [file name] # unpack zipped file (my_files.tar.gz)
+        # -xzvf = e*X*tract from *Z*ipped file, *V*erbose (print file name), from *f*ile
+
+    # file permission e.g. -rw-rw-r-- where:
+        # first symbol = type
+            # d Directory (need execute permission to see inside)
+            # - regular file
+            # 1 symbolic link
+            # c Character device file
+            # b Block device file
+        # Followed by three permissions in order
+            # r Read    (first)
+            # w Write   (second)
+            # x Execute (third)
+            # - No permissions (any spot)
+        # Permissions are repeated for
+            # User
+            # Group
+            # Other/Everyone else
+    # chmod [group][+-=][permissions] [file name] 
+        # *CH*ange *MOD*e. Only owner can change permission.
+        # [group]
+            # u User
+            # g Group
+            # o Other/Everyone else
+            # a All three
+        # [+-=]
+            # + Add
+            # - Remove
+            # = Wipe and add new
 
 # Info
 man ls # documentation
