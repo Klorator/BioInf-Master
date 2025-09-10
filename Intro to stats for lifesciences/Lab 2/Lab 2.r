@@ -1,8 +1,8 @@
-# Intro to stats for lifesciences 
+# Intro to stats for lifesciences
 # Lab 2
 
 # Hypothetical data for 10 students/year
-  # true mean = 30, true SD = 10
+# true mean = 30, true SD = 10
 year_1 <- rnorm(
   n = 10,
   mean = 30,
@@ -38,34 +38,34 @@ simulate_students_test <- function(rep, n, mean, sd, p_val = 0.05) {
     sd <- c(sd, sd)
   }
   # Simulate 1000 repeated t-tests
-p_values <- numeric(0)
-for (i in 1:rep) {
-  # Hypothetical data for n students/year
+  p_values <- numeric(0)
+  for (i in 1:rep) {
+    # Hypothetical data for n students/year
     # true mean & true SD
-  year_1 <- rnorm(
-    n = n,
-    mean = mean[1],
-    sd = sd
-  )
-  year_4 <- rnorm(
-    n = n,
-    mean = mean[2],
-    sd = sd
-  )
-  
-  # t-test & store p-value
-  p_values[i] <- t.test(
-    year_1,
-    year_4,
-    var.equal = T
-  )$p.value
-}
-# plot histogram p-values
-hist(p_values, breaks = 100)
+    year_1 <- rnorm(
+      n = n,
+      mean = mean[1],
+      sd = sd
+    )
+    year_4 <- rnorm(
+      n = n,
+      mean = mean[2],
+      sd = sd
+    )
 
-# summarize number of significant tests
-test_signif <- ifelse(p_values < p_val, T, F)
-sum(test_signif)
+    # t-test & store p-value
+    p_values[i] <- t.test(
+      year_1,
+      year_4,
+      var.equal = T
+    )$p.value
+  }
+  # plot histogram p-values
+  hist(p_values, breaks = 100)
+
+  # summarize number of significant tests
+  test_signif <- ifelse(p_values < p_val, T, F)
+  sum(test_signif)
 
   return(sum(test_signif))
 }
@@ -89,8 +89,6 @@ simulate_students_test(
 ## Larger sample size lowers type-II error (false negative),
 ## but repeated t-test gives many type-I error (false positive)
 
-
-
 # New experiment, year 1 mean = 29, SD = 10
 simulate_students_test(
   rep = 1000,
@@ -112,11 +110,11 @@ simulate_students_test(
 # New simulation
 # Function:
 simulate_students_test_2 <- function(
-  rep, 
-  n, 
+  rep,
+  n,
   mean,
   year_4_mean_increase,
-  sd, 
+  sd,
   p_val = 0.05,
   p_adjust_method = "bonferroni"
 ) {
@@ -127,38 +125,38 @@ simulate_students_test_2 <- function(
     sd <- c(sd, sd)
   }
   # Simulate 1000 repeated t-tests
-p_values <- numeric(0)
-for (i in 1:rep) {
-  # Hypothetical data for n students/year
+  p_values <- numeric(0)
+  for (i in 1:rep) {
+    # Hypothetical data for n students/year
     # true mean & true SD
-  year_1 <- rnorm(
-    n = n,
-    mean = mean[1],
-    sd = sd
-  )
-  year_4 <- rnorm(
-    n = n,
-    mean = mean[2] + rnorm(1, year_4_mean_increase, 1), # Add points to year 4 mean score
-    sd = sd
-  )
-  
-  # t-test & store p-value
-  p_values[i] <- t.test(
-    year_1,
-    year_4,
-    var.equal = T
-  )$p.value
-}
+    year_1 <- rnorm(
+      n = n,
+      mean = mean[1],
+      sd = sd
+    )
+    year_4 <- rnorm(
+      n = n,
+      mean = mean[2] + rnorm(1, year_4_mean_increase, 1), # Add points to year 4 mean score
+      sd = sd
+    )
+
+    # t-test & store p-value
+    p_values[i] <- t.test(
+      year_1,
+      year_4,
+      var.equal = T
+    )$p.value
+  }
   # Adjust p-value
   if (!rlang::is_na(p_adjust_method)) {
-     p_values <- p.adjust(p_values, method = p_adjust_method) 
+    p_values <- p.adjust(p_values, method = p_adjust_method)
   }
-# plot histogram p-values
-hist(p_values, breaks = 100)
+  # plot histogram p-values
+  hist(p_values, breaks = 100)
 
-# summarize number of significant tests
-test_signif <- ifelse(p_values < p_val, T, F)
-sum(test_signif)
+  # summarize number of significant tests
+  test_signif <- ifelse(p_values < p_val, T, F)
+  sum(test_signif)
 
   return(sum(test_signif))
 }
@@ -205,8 +203,8 @@ tech_replicates <- rnorm(1000, mean = 0, sd = 2)
 
 total_replicates <- bio_replicates + tech_replicates
 
-var(bio_replicates)   # ~1
-var(tech_replicates)  # ~4
+var(bio_replicates) # ~1
+var(tech_replicates) # ~4
 var(total_replicates) # ~5
 
 # Variance = SD^2
@@ -218,9 +216,7 @@ my_SEM <- function(x) {
 my_SEM(bio_replicates)
 my_SEM(tech_replicates)
 
-
 # Bonus:
-# calculate the standard error of the mean expression of the gene (SE) 
-# for all three experimental designs (the original, increased biological 
+# calculate the standard error of the mean expression of the gene (SE)
+# for all three experimental designs (the original, increased biological
 # replication, or increased technical replication).
-

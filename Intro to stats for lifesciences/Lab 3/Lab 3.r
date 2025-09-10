@@ -1,7 +1,9 @@
 # Lab 3 stuff
 
 # Read DNA sequencing data of de-novo mutations
-denovo_df <- readr::read_csv(file = "Intro to stats for lifesciences/Lab 3/two.sample.csv")
+denovo_df <- readr::read_csv(
+  file = "Intro to stats for lifesciences/Lab 3/two.sample.csv"
+)
 
 # Data distribution
 par(mfrow = c(1, 2))
@@ -28,16 +30,16 @@ denovo_paired_ttest <- t.test(
   paired = T
 )
 
-  ## pivot longer
-denovo_long <- denovo_paired_df |> 
+## pivot longer
+denovo_long <- denovo_paired_df |>
   tidyr::pivot_longer(
     cols = c(Mother, Father),
     names_to = "parent",
     values_to = "mutations"
-) |> 
+  ) |>
   dplyr::mutate(
     trio = forcats::as_factor(trio)
-)
+  )
 
 # 3.1b
 boxplot(
@@ -50,15 +52,17 @@ boxplot(
 
 # 3.2
 # 3.2a
-  ## mean = 10, sd = 2
-pnorm( # probability to get 13 or more
+## mean = 10, sd = 2
+pnorm(
+  # probability to get 13 or more
   q = 13,
   mean = 10,
   sd = 2,
   lower.tail = F # upper end
 )
 
-qnorm( # value that 20 % of population is under
+qnorm(
+  # value that 20 % of population is under
   p = 0.2,
   mean = 10,
   sd = 2,
@@ -83,7 +87,8 @@ hist(gene_count2)
 sicle_cell <- rbind(
   malaria = c(AA = 0.4, Aa = 0.55, aa = 0.05),
   no_malaria = c(0.8, 0.19, 0.01)
-) * 1000 # Scale back to counts
+) *
+  1000 # Scale back to counts
 
 sicle_cell_chi2 <- chisq.test(
   sicle_cell
@@ -91,4 +96,3 @@ sicle_cell_chi2 <- chisq.test(
 sicle_cell_chi2
 
 ## 3.3b Hardy-Weinberg Equilibrium (HWE)
-
