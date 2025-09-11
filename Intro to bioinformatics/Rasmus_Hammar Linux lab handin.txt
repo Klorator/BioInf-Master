@@ -1,0 +1,50 @@
+# 1
+## 1.1
+find hidden_words/ -name solution_1.1 # locate folder to look in
+ll hidden_words/exercise_1/directoryB/solution_1.1/
+# Letter: C
+
+## 1.2
+ls -la hidden_words/exercise_1/directoryB/solution_1.1/
+# letter: O
+
+## 1.3
+perl hidden_words/exercise_1/directoryB/program.pl
+# Letter: M
+
+## 1.4
+cd hidden_words/exercise_1/directory
+ll
+perl file_size_check.pl # input file size 70
+# letter: M
+
+# 2
+## 2.1
+less solution_2.1.txt
+# letter: A
+
+## 2.2
+nano solution_2.2.txt # add the phrase
+perl text_file_check.pl 
+# letter: N
+
+# 3
+## 3.1
+mkdir solution
+cp codes.txt solution/
+perl check_code.pl 
+# Letter: D _
+
+## 3.2
+rm junk.txt
+perl check_junk.pl # need to empty data/ as well
+rm data/junk*.txt
+perl check_junk.pl
+# Letter: L I
+# 4
+## 4.1
+grep bioinformatics text.txt | wc -l
+perl get_last2char.pl 36
+# Letter: N E
+
+# Hidden word is: COMMAND_LINE

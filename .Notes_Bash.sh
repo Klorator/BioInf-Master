@@ -44,6 +44,7 @@ pwd
     # cd [dir] # move into dir
     # cd .. # move up a dir
     # cd ../[dir] # moving around folders is fluid
+    # cd - # remembers 1 previous folder
 
     # mkdir [dir] # create folder
     # rmdir [dir] # can only remove empty folders
@@ -53,10 +54,30 @@ pwd
     # cp [name of original] [name of copy] # copy file
         # -r to copy recursively = all subfolders & files
     # mv [name of original] [name of copy] # move file (changes the files adress on harddrive)
+    # rsync # copy files to/from remote server, only if on linux server
+        # -a copy modification date
+        # -P show progress
+        # [user@host]:[remote file] [local dir] # download
+        # [local file] [user@host]:[remote dir]  # upload
+    # scp [local file] [user@host]:[remote dir] # from windows to linux server via ssh
+        # -r Recursive, copies all subfolders and files
+    # md5sum [file] # hash fingerprint, for comparing files
 
+    # find [dir] -name [file]
+        # -iname # case insensitive
+    # grep [regEx] [file] # match text in file
+        # -r recursively
+
+    # cat [file name] # print file to terminal
+        # > [file name] # write to file
     # less [file name] # read file content, move up/down with arrows, exit with Q
     # head [options] [file name] # print first 10 rows, -n = n lines
     # tail [options] [file name] # print first 10 rows, -n = n lines
+    # wc [file name] # word count, print n newlines/words/bytes
+        # -l newlines
+        # -w words
+        # -m characters
+        # -c bytes
 
     # nano [file name] # open editor, ^ means hold ctrl
 
@@ -97,7 +118,17 @@ pwd
 # Info
 man ls # documentation
 top # view processes running on the computer
+# alt + b/f same as ctrl + left/right arrow
 
+# Git
+    # git pull # while in repo folder, pull to update
+
+# Broken terminal
+    # ctr + C # kills current process (polite)
+    # kill [process ID] # get ID using top in new terminal
+        # -9 really kill it
+    # pkill [process name] # might kill multiple!
+    # ~. # break ssh connection
 
 ######################################################################
 
