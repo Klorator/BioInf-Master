@@ -39,6 +39,7 @@ pwd
     ll ..
     # * wildcard
     ll .. *.txt
+    # -h File size human readable
 
 # Moving around
     # cd [dir] # move into dir
@@ -54,6 +55,7 @@ pwd
     # cp [name of original] [name of copy] # copy file
         # -r to copy recursively = all subfolders & files
     # mv [name of original] [name of copy] # move file (changes the files adress on harddrive)
+    # ln [file] [path to link] # creates a link to file
     # rsync # copy files to/from remote server, only if on linux server
         # -a copy modification date
         # -P show progress
@@ -131,6 +133,12 @@ top # view processes running on the computer
     # ~. # break ssh connection
 
 ######################################################################
+# Programs/functions
+# samtools # working with .bam files
+# basename & dirname
+
+
+######################################################################
 
 # Print to terminal
     echo "Hello scripting"
@@ -144,9 +152,10 @@ top # view processes running on the computer
     my_text="string"
     echo "$my_text"
 
-    # Can assign integers (used for text manipulation, not math?)
+    # Can assign integers, math operations require $(($var+$var))
     my_int=25
     echo "$my_int"
+    echo $my_int squared is $(($my_int*$my_int))
 
     # Parameter expansion with {} (modifications)
     long_string="This is a long text message."
@@ -183,3 +192,28 @@ top # view processes running on the computer
     echo -e "\nEnter a fruit"
     read fruit
     echo -e "\n You entered: $fruit"
+
+# functions inside lines to eval variables
+    # $(basename $file_path)
+
+# For-loop
+for var in 1 2 3;
+do
+    echo $var
+done
+
+# if-statement
+if [[ "Hello" == "Hello" ]]; then
+    echo "Hello"
+fi
+    # (( compare numbers ))
+    # -lt Less than
+    # -gt Greater than
+
+
+# Passing arguments to scripts
+    # inside script
+        # $0 # name of program
+        # $1 # arg1
+        # $2 # arg2
+        # etc.
