@@ -68,10 +68,39 @@ fake = False
 # List
 my_list = [1, 2, "A", "B"]
 my_list[0] # Index starts with 0
-my_list[1] = my_list[1] * 2
+my_list[-1] # Access last index
+my_list[1] = my_list[1] * 2 # Replace value
 
 my_list.append(30)
 len(my_list)
+my_list.insert(4, "B.5") # Insert after index (index, value)
+my_list
+
+my_list[2:5] # Slice (subset) m:n including m, before n
+my_list[4:]
+my_list[:4]
+my_list[-100:50] # out of bounds works, no recycling
+
+my_list[2:5] = ["C", "D", "C"] # replace values
+my_list
+
+my_list.count("C") # count times value occurs
+my_list.index("C") # first index value occurs in
+my_list.index("C", 3) # begin search at position
+
+    ## %in%
+4 in my_list
+"x" in my_list
+"x" not in my_list
+
+my_list.extend([12, 12, 12, 13, 14])
+my_list.pop() # Removes and returns index (default last)
+my_list.pop(4)
+my_list.remove(12) # remove first occurence of value
+
+my_list.reverse() # flips the order
+# my_list.sort() # can't sort mixed list (can sort list of lists)
+# my_list.clear() # remove all items
 
 # Type conversion
 str(23)

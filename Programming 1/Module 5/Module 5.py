@@ -11,10 +11,10 @@ def jump(t, x, y):
 
 def make_turtle(x, y, visible = True):
     t = turtle.Turtle()
-    t.speed(0)
     if visible == False:
         # visible = False
         t.hideturtle() # Hide turtle
+        t.speed(0)     # Speed fastest
     
     jump(t, x, y)
     return t
@@ -76,24 +76,31 @@ tricolore(
     flag_height
 )
 ## Draw pentagrams top
-pent_top_x = pentagram_top[0]
+# pent_top_x = pentagram_top[0]
+# pent_bottom_x = pentagram_bottom[0]
 for i in range(5):
     pentagram(
-        pent_top_x,
+        pentagram_top[0] + i * pentagram_side,
         pentagram_top[1],
         pentagram_side,
         "green"
     )
-    pent_top_x += pentagram_side
-## Draw pentagrams bottom
-pent_bottom_x = pentagram_bottom[0]
-for i in range(5):
+    # pent_top_x += pentagram_side
     pentagram(
-        pent_bottom_x,
+        pentagram_bottom[0] + i * pentagram_side,
         pentagram_bottom[1],
         pentagram_side,
         "green"
     )
-    pent_bottom_x += pentagram_side
+## Draw pentagrams bottom
+# pent_bottom_x = pentagram_bottom[0]
+# for i in range(5):
+#     pentagram(
+#         pent_bottom_x,
+#         pentagram_bottom[1],
+#         pentagram_side,
+#         "green"
+#     )
+#     pent_bottom_x += pentagram_side
 # Done
 turtle.done()
