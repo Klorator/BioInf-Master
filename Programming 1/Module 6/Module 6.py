@@ -19,7 +19,8 @@ def median_lst(lst):
     num = filter_numeric(lst)
     num.sort()
     if len(num) % 2 == 0:
-        middle = [num[int((len(num) / 2) - 1)], num[int(len(num) / 2)]]
+        middle = [num[int((len(num) / 2) - 1)], \
+            num[int(len(num) / 2)]]
         lst_median = sum(middle) / 2
     else:
         lst_median = num[int(len(num) // 2)]

@@ -19,8 +19,9 @@ def make_turtle(x, y, visible = True):
     jump(t, x, y)
     return t
 
-def rectangle(x, y, width, height, color = ""):
-    t = make_turtle(x, y)
+def rectangle(t, x, y, width, height, color = ""):
+    # t = make_turtle(x, y)
+    jump(t, x, y)
     t.setheading(0)
 
     t.fillcolor(color)
@@ -32,18 +33,22 @@ def rectangle(x, y, width, height, color = ""):
         t.left(90)
     
     t.end_fill()
+    return t
 
-def tricolore(x, y, h):
+def tricolore(t, x, y, h):
     flag_col = ["blue", "white", "red"]
     x_loop = x
     y_loop = y
 
     for col in flag_col:
-        rectangle(x_loop, y_loop, h/2, h, col)
+        rectangle(t, x_loop, y_loop, h/2, h, col)
         x_loop += h/2
+    
+    return t
 
-def pentagram(x, y, side, color):
-    t = make_turtle(x, y)
+def pentagram(t, x, y, side, color):
+    # t = make_turtle(x, y)
+    jump(t, x, y)
     t.setheading(288)
 
     t.fillcolor(color)
@@ -53,6 +58,8 @@ def pentagram(x, y, side, color):
         t.left(180 + 36)
 
     t.end_fill()
+
+    return t
 
 ###############################################
 
@@ -69,38 +76,30 @@ flag_bl_corner = [-rectangle_width * 1.5, -flag_height / 2]
 pentagram_top = [-rectangle_width * 2, (flag_height / 2) + (pentagram_height * 1.5)]
 pentagram_bottom = [pentagram_top[0], -((flag_height / 2) + (pentagram_height * 0.5))]
 
+## Create turtle
+t = make_turtle(0, 0, True)
 ## Draw flag
 tricolore(
+    t,
     flag_bl_corner[0],
     flag_bl_corner[1],
     flag_height
 )
 ## Draw pentagrams top
-# pent_top_x = pentagram_top[0]
-# pent_bottom_x = pentagram_bottom[0]
 for i in range(5):
     pentagram(
+        t,
         pentagram_top[0] + i * pentagram_side,
         pentagram_top[1],
         pentagram_side,
         "green"
     )
-    # pent_top_x += pentagram_side
     pentagram(
+        t,
         pentagram_bottom[0] + i * pentagram_side,
         pentagram_bottom[1],
         pentagram_side,
         "green"
     )
-## Draw pentagrams bottom
-# pent_bottom_x = pentagram_bottom[0]
-# for i in range(5):
-#     pentagram(
-#         pent_bottom_x,
-#         pentagram_bottom[1],
-#         pentagram_side,
-#         "green"
-#     )
-#     pent_bottom_x += pentagram_side
 # Done
 turtle.done()

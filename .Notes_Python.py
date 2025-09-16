@@ -102,6 +102,22 @@ my_list.reverse() # flips the order
 # my_list.sort() # can't sort mixed list (can sort list of lists)
 # my_list.clear() # remove all items
 
+    # List comprehension
+new_lst = [elem for elem in my_list if elem != "C"]
+new_lst
+new_lst2 = [i for i in my_list if i != 12]
+new_lst2
+
+a = [x for x in range(7)]
+[z*z for z in a if z % 2 == 0]
+
+# Tuples (immutable, values can't be modified but sorting/copy/count... is ok)
+tup = (10, 11, 12, 13)
+tup[2] # Indexing like list
+tup2 = (42,) # Tuple with one element (the ',' is required)
+tup3 = () # Empty tuple
+
+
 # Type conversion
 str(23)
 int('23')
