@@ -97,3 +97,9 @@ print('\n\n')
 
 ####
 
+'Take it easy'.split(' ')
+print(text.split(' '))
+
+import re
+wordlist = re.findall(r'[a-zA-ZåäöÅÄÖ]+', text)
+print(wordlist)

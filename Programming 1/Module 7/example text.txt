@@ -1,0 +1,7 @@
+Mitochondria are present in all eukaryotic cells (for a review, see 'Origin and diversification of mitochondria', Roger et al.), 
+where among many other functions it supplies the cells with chemical energy (ATP). Here, we will focus on the genes present in mitochondria; 
+mitochondrial genomes present the advantage of being relatively small compared to nuclear genomes (e.g. 16,000 base pairs in humans), 
+facilitating bioinformatic operations in the labs. They are also present in many copies in the cells, thus they are relatively easy to sequence 
+even in extreme cases where DNA is often limited such as environmental DNA or ancient DNA studies. 
+Although mitochondrial genomes can take many different forms depending on the species, they all contain a series of conserved protein-coding genes 
+as well as rRNA and tRNA; this makes mitochondrial genomes good candidates for comparative analyses between different species.
