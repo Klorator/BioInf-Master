@@ -110,6 +110,7 @@ new_lst2
 
 a = [x for x in range(7)]
 [z*z for z in a if z % 2 == 0]
+[[x, y] for x in range(3) for y in range(3)] # Nested loops
 
 # Tuples (immutable, values can't be modified but sorting/copy/count... is ok)
 tup = (10, 11, 12, 13)

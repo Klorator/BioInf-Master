@@ -72,6 +72,7 @@ pwd
 
     # cat [file name] # print file to terminal
         # > [file name] # write to file
+        # >> [file name] # append to file
     # less [file name] # read file content, move up/down with arrows, exit with Q
     # head [options] [file name] # print first 10 rows, -n = n lines
     # tail [options] [file name] # print first 10 rows, -n = n lines
@@ -105,8 +106,10 @@ pwd
             # User
             # Group
             # Other/Everyone else
-    # chmod [group][+-=][permissions] [file name] 
+    # chmod [option] [group][+-=][permissions] [file name] 
         # *CH*ange *MOD*e. Only owner can change permission.
+        # [option]
+            # -R recursively
         # [group]
             # u User
             # g Group
@@ -193,8 +196,12 @@ top # view processes running on the computer
     read fruit
     echo -e "\n You entered: $fruit"
 
+# Write output to file
+    echo "Write this to file" > my_file.txt # overwrite
+    echo "This also" >> my_file.txt # append
+
 # functions inside lines to eval variables
-    # $(basename $file_path)
+    # $(basename $file_path .txt)
 
 # For-loop
 for var in 1 2 3;
