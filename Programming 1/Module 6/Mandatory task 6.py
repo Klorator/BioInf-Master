@@ -18,8 +18,8 @@ def smooth_b(a, n):
 
 lst = [1, 2, 6, 4, 5, 0, 1, 2]
 
-smooth_a(lst, 1)
-smooth_a(lst, 2)
+print(smooth_a(lst, 1))
+print(smooth_a(lst, 2))
 
-smooth_b(lst, 1)
-smooth_b(lst, 2)
+print(smooth_b(lst, 1))
+print(smooth_b(lst, 2))
