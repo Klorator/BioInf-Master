@@ -1,0 +1,258 @@
+Three_Letter_Country_Code,Continent_Name,Continent_Code
+AFG,Asia,AS
+ALB,Europe,EU
+DZA,Africa,AF
+ASM,Oceania,OC
+AND,Europe,EU
+AGO,Africa,AF
+ATG,North America,NA
+AZE,Europe,EU
+AZE,Asia,AS
+ARG,South America,SA
+AUS,Oceania,OC
+AUT,Europe,EU
+BHS,North America,NA
+BHR,Asia,AS
+BGD,Asia,AS
+ARM,Europe,EU
+ARM,Asia,AS
+BRB,North America,NA
+BEL,Europe,EU
+BMU,North America,NA
+BTN,Asia,AS
+BOL,South America,SA
+BIH,Europe,EU
+BWA,Africa,AF
+BRA,South America,SA
+BLZ,North America,NA
+IOT,Asia,AS
+SLB,Oceania,OC
+VGB,North America,NA
+BRN,Asia,AS
+BGR,Europe,EU
+MMR,Asia,AS
+BDI,Africa,AF
+BLR,Europe,EU
+KHM,Asia,AS
+CMR,Africa,AF
+CAN,North America,NA
+CPV,Africa,AF
+CYM,North America,NA
+CAF,Africa,AF
+LKA,Asia,AS
+TCD,Africa,AF
+CHL,South America,SA
+CHN,Asia,AS
+TWN,Asia,AS
+CXR,Asia,AS
+CCK,Asia,AS
+COL,South America,SA
+COM,Africa,AF
+MYT,Africa,AF
+COG,Africa,AF
+COD,Africa,AF
+COK,Oceania,OC
+CRI,North America,NA
+HRV,Europe,EU
+CUB,North America,NA
+CYP,Europe,EU
+CYP,Asia,AS
+CZE,Europe,EU
+BEN,Africa,AF
+DNK,Europe,EU
+DMA,North America,NA
+DOM,North America,NA
+ECU,South America,SA
+SLV,North America,NA
+GNQ,Africa,AF
+ETH,Africa,AF
+ERI,Africa,AF
+EST,Europe,EU
+FRO,Europe,EU
+FLK,South America,SA
+FJI,Oceania,OC
+FIN,Europe,EU
+ALA,Europe,EU
+FRA,Europe,EU
+GUF,South America,SA
+PYF,Oceania,OC
+DJI,Africa,AF
+GAB,Africa,AF
+GEO,Europe,EU
+GEO,Asia,AS
+GMB,Africa,AF
+PSE,Asia,AS
+DEU,Europe,EU
+GHA,Africa,AF
+GIB,Europe,EU
+KIR,Oceania,OC
+GRC,Europe,EU
+GRL,North America,NA
+GRD,North America,NA
+GLP,North America,NA
+GUM,Oceania,OC
+GTM,North America,NA
+GIN,Africa,AF
+GUY,South America,SA
+HTI,North America,NA
+VAT,Europe,EU
+HND,North America,NA
+HKG,Asia,AS
+HUN,Europe,EU
+ISL,Europe,EU
+IND,Asia,AS
+IDN,Asia,AS
+IRN,Asia,AS
+IRQ,Asia,AS
+IRL,Europe,EU
+ISR,Asia,AS
+ITA,Europe,EU
+CIV,Africa,AF
+JAM,North America,NA
+JPN,Asia,AS
+KAZ,Europe,EU
+KAZ,Asia,AS
+JOR,Asia,AS
+KEN,Africa,AF
+PRK,Asia,AS
+KOR,Asia,AS
+KWT,Asia,AS
+KGZ,Asia,AS
+LAO,Asia,AS
+LBN,Asia,AS
+LSO,Africa,AF
+LVA,Europe,EU
+LBR,Africa,AF
+LBY,Africa,AF
+LIE,Europe,EU
+LTU,Europe,EU
+LUX,Europe,EU
+MAC,Asia,AS
+MDG,Africa,AF
+MWI,Africa,AF
+MYS,Asia,AS
+MDV,Asia,AS
+MLI,Africa,AF
+MLT,Europe,EU
+MTQ,North America,NA
+MRT,Africa,AF
+MUS,Africa,AF
+MEX,North America,NA
+MCO,Europe,EU
+MNG,Asia,AS
+MDA,Europe,EU
+MNE,Europe,EU
+MSR,North America,NA
+MAR,Africa,AF
+MOZ,Africa,AF
+OMN,Asia,AS
+NAM,Africa,AF
+NRU,Oceania,OC
+NPL,Asia,AS
+NLD,Europe,EU
+ANT,North America,NA
+CUW,North America,NA
+ABW,North America,NA
+SXM,North America,NA
+BES,North America,NA
+NCL,Oceania,OC
+VUT,Oceania,OC
+NZL,Oceania,OC
+NIC,North America,NA
+NER,Africa,AF
+NGA,Africa,AF
+NIU,Oceania,OC
+NFK,Oceania,OC
+NOR,Europe,EU
+MNP,Oceania,OC
+UMI,Oceania,OC
+UMI,North America,NA
+FSM,Oceania,OC
+MHL,Oceania,OC
+PLW,Oceania,OC
+PAK,Asia,AS
+PAN,North America,NA
+PNG,Oceania,OC
+PRY,South America,SA
+PER,South America,SA
+PHL,Asia,AS
+PCN,Oceania,OC
+POL,Europe,EU
+PRT,Europe,EU
+GNB,Africa,AF
+TLS,Asia,AS
+PRI,North America,NA
+QAT,Asia,AS
+REU,Africa,AF
+ROU,Europe,EU
+RUS,Europe,EU
+RUS,Asia,AS
+RWA,Africa,AF
+BLM,North America,NA
+SHN,Africa,AF
+KNA,North America,NA
+AIA,North America,NA
+LCA,North America,NA
+MAF,North America,NA
+SPM,North America,NA
+VCT,North America,NA
+SMR,Europe,EU
+STP,Africa,AF
+SAU,Asia,AS
+SEN,Africa,AF
+SRB,Europe,EU
+SYC,Africa,AF
+SLE,Africa,AF
+SGP,Asia,AS
+SVK,Europe,EU
+VNM,Asia,AS
+SVN,Europe,EU
+SOM,Africa,AF
+ZAF,Africa,AF
+ZWE,Africa,AF
+ESP,Europe,EU
+SSD,Africa,AF
+ESH,Africa,AF
+SDN,Africa,AF
+SUR,South America,SA
+SJM,Europe,EU
+SWZ,Africa,AF
+SWE,Europe,EU
+CHE,Europe,EU
+SYR,Asia,AS
+TJK,Asia,AS
+THA,Asia,AS
+TGO,Africa,AF
+TKL,Oceania,OC
+TON,Oceania,OC
+TTO,North America,NA
+ARE,Asia,AS
+TUN,Africa,AF
+TUR,Europe,EU
+TUR,Asia,AS
+TKM,Asia,AS
+TCA,North America,NA
+TUV,Oceania,OC
+UGA,Africa,AF
+UKR,Europe,EU
+MKD,Europe,EU
+EGY,Africa,AF
+GBR,Europe,EU
+GGY,Europe,EU
+JEY,Europe,EU
+IMN,Europe,EU
+TZA,Africa,AF
+USA,North America,NA
+VIR,North America,NA
+BFA,Africa,AF
+URY,South America,SA
+UZB,Asia,AS
+VEN,South America,SA
+WLF,Oceania,OC
+WSM,Oceania,OC
+YEM,Asia,AS
+ZMB,Africa,AF
+,Oceania,OC
+,Asia,AS
+,Asia,AS
+,Asia,AS
