@@ -84,3 +84,93 @@ ggplot(df1) +
     data = df_curve,
     linewidth = 2
   )
+
+
+######################################
+
+df <- data.frame(
+  sex = rep(c("M", "F"), 100),
+  age = rep(c("A", "B", "C", "D"), 50),
+  # crash = rbinom(200, 1, 0.3)
+  crash = rep(c("Yes", "No", "No", "Yes", "No", "Yes", "Yes", "No"), 25)
+)
+
+df_count <- matrix(table(df))
+
+df_count2 <- df |>
+  dplyr::group_by(sex, age) |>
+  dplyr::summarise(crash = dplyr::n()) |>
+  tidyr::pivot_wider(names_from = age, values_from = crash)
+df_count2
+
+chisq.test(df_count)
+
+
+# Calculate F-stat, P-val, & R2 for regression
+## df_variables = 1
+## df_obs = obs - 2
+## F = SSreg / (SSerror / df_obs)
+## P = pf(F, df_variables, df_obs)
+## R2 = SSreg / (SSreg + SSerror)
+
+library(MASS)
+library(ggfortify)
+# Load the data
+data("crabs")
+# Have a look at the data help file in order to better understand it
+?crabs
+# Run a PCA on all five morphological measurments for both sexes and both species
+pca_all <- prcomp(crabs[, 4:8], scale = TRUE)
+# Look at the output
+summary(pca_all)
+print(pca_all)
+# Q1A: How much variance does PC3 explain and what is the loading for BD on PC2?
+# Plot and color based on species
+autoplot(
+  pca_all,
+  data = crabs,
+  colour = 'sp',
+  frame = FALSE,
+  loadings = TRUE,
+  loadings.colour = 'blue',
+  loadings.label = TRUE,
+  loadings.label.size = 3
+)
+# Plot and color based on sex
+autoplot(
+  pca_all,
+  data = crabs,
+  colour = 'sex',
+  frame = FALSE,
+  loadings = TRUE,
+  loadings.colour = 'blue',
+  loadings.label = TRUE,
+  loadings.label.size = 3
+)
+# Q1B:
+# In order to get a better look at the data we subset each sex and look at them seperately
+dat_male <- crabs[crabs$sex == "M", ]
+pca_male <- prcomp(dat_male[, 4:8], scale = TRUE)
+autoplot(
+  pca_male,
+  data = dat_male,
+  colour = 'sp',
+  frame = FALSE,
+  loadings = TRUE,
+  loadings.colour = 'blue',
+  loadings.label = TRUE,
+  loadings.label.size = 3
+)
+dat_female <- crabs[crabs$sex == "F", ]
+pca_female <- prcomp(dat_female[, 4:8], scale = TRUE)
+autoplot(
+  pca_female,
+  data = dat_female,
+  colour = 'sp',
+  frame = FALSE,
+  loadings = TRUE,
+  loadings.colour = 'blue',
+  loadings.label = TRUE,
+  loadings.label.size = 3
+)
+# Q1C: Can you detect any differences between the two species when looking at the sexes separately? And what would be your overall conclusion regarding morphological differences in these crabs?

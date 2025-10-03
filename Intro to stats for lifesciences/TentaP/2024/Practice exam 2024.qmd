@@ -1,0 +1,304 @@
+---
+title: "Practice exam 2024"
+author: BJBTE-0006-WHR
+format: html
+execute: 
+  echo: false
+  warning: false
+  error: false
+  message: false
+---
+
+```{r}
+#| label: library
+library(ggplot2)
+library(ggfortify)
+```
+
+## Question 1)
+
+### Data
+
+```{r}
+#| echo: true
+larvae <- rbind(
+  spring = c("dark brown" = 17, "light brown" = 34, "green" = 53),
+  summer = c(113, 113, 73)
+)
+```
+
+```{r}
+#| tbl-cap: Number of larvae (*Pararge xiphia*) found.
+knitr::kable(larvae)
+```
+
+### a)
+
+Because we have counts for categories, a chi-square test would be appropriate. The null hypothesis is that there is no difference in frequency between any groups.
+
+```{r}
+chisq.test(larvae)
+```
+
+### b)
+
+The chi-square test on the full dataset indicated that there is a difference between at least one of the groups (X^2^ = 28.95, df = 2, p = 5.19e-10).
+
+### c)
+
+There is a difference between the three color-morphs where the brown larvae are fewer than expected in spring and green larvae are more abundant. In summer the relationship is reversed with more brown and fewer green larvae. (As seen by comparing observed and expected counts.) This correlates with the original hypothesis about camouflage, although the counts are overall much lower in spring which may be cause for concern.
+
+### d)
+
+Additional tests could be to perform post-hoc pairwise chi-square tests to determine between which groups the difference is. Note that the p-values need to be adjusted.
+
+### e)
+
+Improvements to the experimental design could be collecting data over several years to account for seasonal variation/cycles. Additional variables can be measured, such as temperature, percipitation, preadators. The experiment could also be performed at different geographical locations. Such information gives information on variable factors in the uncontrolled environmnet and may help explain variation or highlight trends.
+
+## Question 2)
+
+### Data
+
+```{r}
+spruce <- readr::read_delim(
+  "C:/Programming/Projects/BioInf-Master/Intro to stats for lifesciences/TentaP/2024/plants.txt"
+)
+```
+
+```{r}
+#| tbl-cap: Summary of spruce growth by treatment and species.
+spruce_summary <- spruce[-1] |>
+  dplyr::group_by(treatment, Species) |>
+  dplyr::summarise(
+    growth_mean = round(mean(growth), 1)
+  )
+knitr::kable(spruce_summary)
+```
+
+### a)
+
+For investigating the difference in growth based on two factors, a two-way ANOVA is appropriate. The main null hypothesis is that there is no difference in growth based on the treatment. Addidtional null hypothesies are that there is no difference in growth based on species nor the interaction between treatment and species.
+
+### b)
+
+```{r}
+spruce_aov <- aov(
+  growth ~ treatment * Species,
+  data = spruce
+)
+```
+
+Inspecting the residuals indicate that they look ok enough because ANOVA is a pretty robust method. The within groups variation is not compleately even across the dataset (left-hand residual plots) but there don't seem to be any problematic outliers (right-hand plots).
+
+```{r}
+#| fig-cap: "Formula: `growth ~ treatment * Species`."
+#| fig-align: center
+par(mfrow = c(2, 2))
+plot(spruce_aov)
+par(mfrow = c(1, 1))
+```
+
+We could attempt a log~10~ transformation to make the spread of residuals a little more homogenous. This improves the model slightly but also makes the results harder to interpret biologically so I don't consider the improvement worth the transformation.
+
+```{r}
+#| fig-cap: "Formula: `log10(growth) ~ treatment * Species`."
+#| fig-align: center
+spruce_aov_log <- aov(
+  log10(growth) ~ treatment * Species,
+  data = spruce
+)
+par(mfrow = c(2, 2))
+plot(spruce_aov_log)
+par(mfrow = c(1, 1))
+```
+
+### c)
+
+```{r}
+#| fig-cap: Distribution of data by species and treatment.
+#| fig-align: center
+ggplot(
+  spruce,
+  aes(x = Species, y = growth, fill = treatment)
+) +
+  theme_classic() +
+  geom_boxplot() +
+  scale_fill_brewer(palette = "Dark2", labels = c("Control", "Fertilizer")) +
+  labs(x = "Species", y = "Growth [cm]", fill = "Treatment")
+```
+
+### d)
+
+```{r}
+spruce_aov_summary <- summary(spruce_aov)
+```
+
+The ANOVA indicates that there is a difference based on treatment (F = 20.78, df = 1, p = 0.0003), species (F = 83.3, df = 3, p = 5.58e-10), and their interaction (F = 6.8, df = 3, p = 0.0036).
+
+```{r}
+spruce_aov_tukey <- TukeyHSD(spruce_aov)
+```
+
+To investigate between which groups the difference lies, I perform post-hoc analysis using `TukeyHSD`. This indicates a difference based on treatment (as expected since there are only two groups), as well as a difference between all pairings of species except D vs A. Species D vs B is questionable as the adjusted p-value is very close to 0.05 (p adj = 0.048).
+
+I will omit a detailed interpretation of the interaction as it is verbose and not the main focus of the study. There is no difference due to the interaction within species A nor B.
+
+### e)
+
+My conclusion is that fertilizer should not be used as for all occasions where there is a difference between means in growth the fertilization treatment yielded less growth compared to the control.
+
+## Question 3)
+
+### a)
+
+```{r}
+# Calculate F-stat, P-val, & R2 for regression
+## df_variables = 1
+## df_obs = obs - 2
+## F = SSreg / (SSerror / df_obs)
+## P = pf(F, df_variables, df_obs, lower.tail = F)
+## R2 = SSreg / (SSreg + SSerror)
+
+SSreg <- 110.7
+SSerror <- 2440.2
+df_var <- 1
+df_obs <- 2113 - 2
+
+F_stat <- round(SSreg / (SSerror / df_obs), 2)
+p_val <- format(
+  pf(F_stat, df_var, df_obs, lower.tail = F),
+  scientific = T,
+  digits = 3
+)
+R2 <- round(SSreg / (SSreg + SSerror), 3)
+```
+
+* F = 110.7 / (2440.2 / 2111) = `{r} F_stat`
+* P = pf(`{r} F_stat`, 1, 2111) = `{r} p_val`
+* R^2^ = 110.7 / (110.7 + 2440.2) = `{r} R2`
+
+### b)
+
+While the p-value indicates that sun exposure has an effect, the R^2^-value is very low and indicates no true correlation. As a whole I would, therefore, not draw the conclusion that sun-bathing plays a significant role in developing skin cancer compared to other possible factors. The "self-reported" aspect is a difficult variable to use as basis for extrapolating to the population due to the uncertainty in accuracy.
+
+### c)
+
+I am assuming a regression was performed to produce what is given (R^2^), which is possible given that the scale for skin-cell changes is treated as a continous variable. This is possible depending on how the ordinal scale is defined. I would have prefered to treat it as an ordinal factor and perform an ANOVA.
+
+The uncertainty in the self-reported exposure variable could maybe be mitigated somewhat by binning the values into ordinal categories. Then a chi-squared test could be performed (or ANOVA with skin-cell changes as continous).
+
+### d)
+
+This is an observational study as no controlled experiment/intentional treatment was performed (that being the main difference).
+
+The ethical limitations on purposefully exposing people to a potentially cancer inducing treatment make it impossible to perform an experimental version of this same study. However, it could be done using animal models. The benefit of an observational study is that it attempts to directly measure the real world circumstances and any conclusions are therefore easier to extrapolate to the rest of the population compared to other model systems.
+
+## Question 4)
+
+```{r}
+pace <- readr::read_delim(
+  "C:/Programming/Projects/BioInf-Master/Intro to stats for lifesciences/TentaP/2024/pace.txt"
+)
+pace$temp <- factor(pace$temp)
+```
+
+### a)
+
+```{r}
+#| tbl-cap: Summary of data on 160 female fruit flies (*Drosophila melanogaster*) raised in different temperatures (20 vs 28 Celsius). Columns are means.
+pace_summary <- pace |>
+  dplyr::group_by(temp) |>
+  dplyr::summarise(dplyr::across(dplyr::where(is.numeric), mean))
+knitr::kable(head(pace_summary))
+```
+
+```{r}
+#| fig-cap: Distribution of data.
+#| fig-align: center
+pace_long <- pace |>
+  tidyr::pivot_longer(
+    tidyselect::where(is.numeric),
+    values_to = "values",
+    names_to = "variable"
+  )
+
+ggplot(
+  pace_long,
+  aes(x = values, fill = temp)
+) +
+  theme_classic() +
+  geom_histogram(color = "grey") +
+  facet_wrap(variable ~ temp, nrow = 2, scales = "free") +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(fill = "Temperature [C]", x = NULL) +
+  theme(legend.position = "bottom")
+```
+
+The variables mass and metabolism appear to be reasonably normaly distributed. While longevity is more questionable but not terrible, activity is heavily skewed. Applying a log~10~ transformation to activity and longevity makes the distributions look better.
+
+```{r}
+#| fig-cap: Distrubution of data. Activity and longevity log~10~transformed.
+#| fig-align: center
+pace_long_log <- pace |>
+  dplyr::mutate(
+    activity = log10(activity),
+    longevity = log10(longevity)
+  ) |>
+  tidyr::pivot_longer(
+    tidyselect::where(is.numeric),
+    values_to = "values",
+    names_to = "variable"
+  )
+
+ggplot(
+  pace_long_log,
+  aes(x = values, fill = temp)
+) +
+  theme_classic() +
+  geom_histogram(color = "grey") +
+  facet_wrap(variable ~ temp, nrow = 2, scales = "free") +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(fill = "Temperature [C]", x = NULL) +
+  theme(legend.position = "bottom")
+```
+
+### b)
+
+```{r}
+pace_log <- pace |>
+  dplyr::mutate(
+    activity = log10(activity),
+    longevity = log10(longevity)
+  )
+
+pace_pca <- prcomp(
+  pace_log[2:5],
+  scale. = T
+)
+```
+
+A majority of variance is explained by the first three components (46 %, 27 %, and 22 % respectively). PC1 is mostly influenced by mass and metabolism, with smaller PC1 values indicating higher mass and metabolism. PC2 mainly consists of longevity and activity, with larger PC2 values indicating longer life-span and lower activity.
+
+```{r}
+#| tbl-cap: Summary tables for PCA model.
+summary(pace_pca)
+pace_pca
+```
+
+### c)
+
+There appears to be distinct groups based on temperature
+
+```{r}
+#| fig-cap: PCA analysis.
+#| fig-align: center
+# Needs ggortify loaded to handle class prcomp
+autoplot(
+  pace_pca,
+  data = pace_log,
+  color = "temp"
+) +
+  theme_classic() +
+  labs(color = "Temperature [C]")
+```

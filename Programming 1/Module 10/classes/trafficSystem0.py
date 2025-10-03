@@ -1,6 +1,7 @@
 # Imports:
 # from statistics import mean, median
 from time import sleep
+
 import destinations
 import trafficComponents as tc
 
@@ -48,11 +49,10 @@ class TrafficSystem:
         if dest != None:
             self.queue.append(tc.Vehicle(dest, self.time))
         # If right lane has space & queue is not empty
-        if (self.system[2].last_free() and
-            len(self.queue) > 0):
+        if self.system[2].last_free() and len(self.queue) > 0:
             # pop index 0 into right lane
             self.system[2].enter(self.queue.pop(0))
-    
+
     def number_in_system(self):
         pass
 
@@ -65,11 +65,11 @@ def main():
     for i in range(100):
         ts.snapshot()
         ts.step()
-        sleep(0.1) # Pause for 0.1 s.
-    print('\nFinal state:')
+        sleep(0.1)  # Pause for 0.1 s.
+    print("\nFinal state:")
     ts.snapshot()
     print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
