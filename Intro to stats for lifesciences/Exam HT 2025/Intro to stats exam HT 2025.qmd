@@ -1,0 +1,374 @@
+---
+title: "Exam HT 2025"
+author: BJBTE-0006-WHR
+format: html
+execute: 
+  echo: true
+  warning: false
+  error: false
+  message: false
+---
+
+```{r}
+#| echo: false
+#| label: Library
+library(ggplot2)
+library(ggfortify)
+```
+## Question 1
+
+### A)
+
+Because the data should be from a Poisson distribution (counts of mutations) and we want to do a regression of mutations compared to hair and skin as a response to the participants age, a generalized linear regression would be appropriate so we can choose the distribution. (Alternatively we could attempt to transform the data to approximate a normal distribution.) The null hypothesis is that there is no effect of age on number of mutations in haploid sperm cells.
+
+## B)
+
+The sample size for estimating the effect of age is the number of participants (713).
+
+## C)
+
+```{r}
+#| echo: false
+# Calculate F-stat, P-val, & R2 for regression
+## df_variables = 1
+## df_obs = obs - 2
+## F = SSreg / (SSerror / df_obs)
+## P = pf(F, df_variables, df_obs, lower.tail = F)
+## R2 = SSreg / (SSreg + SSerror)
+
+SSreg = 36
+SSerror = 97
+df_var = 1
+df_obs = (713 * 10) - 2
+
+F_stat = SSreg / (SSerror / df_obs)
+P_val = pf(F_stat, df_var, df_obs, lower.tail = F)
+R2 = SSreg / (SSreg + SSerror)
+```
+
+* F = 36 / (97 / 7128) = 2645.443
+* P = pf(2645.443, 1, 7128, lower.tail = FALSE) = 0
+* R^2^ = 36 / (36 / 97) = 0.270...
+
+Considering the p-value the test indicates a difference in mutation rate based on age. However, the low R^2^ value indicates that this difference may not be useful in a practical sense, i.e. there is a difference in number of mutations due to age but it's not a reliable way to make predictions.
+
+## Question 2
+
+### Data
+
+```{r}
+#| echo: false
+mRNA <- readr::read_delim(
+  "C:/Programming/Projects/BioInf-Master/Intro to stats for lifesciences/Exam HT 2025/library_size.txt"
+)
+mRNA$library <- factor(mRNA$library)
+```
+
+```{r}
+#| echo: false
+#| tbl-cap: Preview of library size dataset.
+knitr::kable(head(mRNA, 4))
+```
+
+### a)
+
+To investigate if amount of tissue affects number of reads a linear regression is appropriate. Amount of tissue should follow a normal distribution and number of reads can be transformed to approximate a normal distribution (from Poisson). The null hypothesis is that there is no effect of tissue amount on number of reads.
+
+### b)
+
+```{r}
+mRNA_model <- lm(
+    reads ~ tissue,
+    data = mRNA
+)
+```
+
+The residuals don't look very good with some data points being noticeably different from the majority. A log~10~ transformation may help.
+
+```{r}
+#| fig-cap: "Residuals for linear regression model. Formula: reads ~ tissue"
+#| fig-align: center
+par(mfrow = c(2, 2))
+plot(mRNA_model)
+par(mfrow = c(1, 1))
+```
+
+With log~10~ transforming both axies, the residuals look better. The left-hand plots could still be more homogenous, but the quantile-quantile plot looks nice and there are no clear outliers. Checking the results against a non-parametric test may be advised, but linear regression is pretty robust so I think it's ok.
+
+```{r}
+#| fig-cap: "Residuals for linear regression model. Formula: log10(reads) ~ log10(tissue)"
+#| fig-align: center
+mRNA_model_log <- lm(
+    log10(reads) ~ log10(tissue),
+    data = mRNA
+)
+par(mfrow = c(2, 2))
+plot(mRNA_model_log)
+par(mfrow = c(1, 1))
+```
+
+### c)
+
+```{r}
+#| echo: false
+mRNA_results <- summary(mRNA_model_log)
+```
+
+* F = 0.004... 
+* df = 1 and 23 
+* P = 0.94...
+* R^2^ = -0.04...
+
+### d)
+
+```{r}
+#| fig-cap: Log10 transformed x and y axis.
+#| fig-align: center
+ggplot(
+  mRNA, 
+  aes(x = log10(tissue), y = log10(reads))) +
+  theme_classic() +
+  geom_point() +
+  labs(
+    x = "Tissue [mg]",
+    y = "Reads [thousand]"
+  )
+```
+
+The regression test indicates that there is no difference in number of reads based on amount of tissue, so it's not my fault we got a low read count. I can now complain to SciLife lab.
+
+## Question 3
+### Data
+```{r}
+#| echo: false
+temp <- readr::read_delim(
+  "C:/Programming/Projects/BioInf-Master/Intro to stats for lifesciences/Exam HT 2025/temp_growth3.txt"
+)
+```
+
+```{r}
+#| echo: false
+#| tbl-cap: Summary of fitness data.
+temp_summary <- temp |> 
+  dplyr::group_by(organism, temperature) |> 
+  dplyr::summarise(LabFitness_mean = mean(LabFitness))
+knitr::kable(temp_summary)
+```
+
+### a)
+
+Because we have one continous variable and two factors, a two-way ANOVA is appropriate. The main null hypothesis is that temperature has no effect on fitness. Other null hypothesies are that there is no difference between organism and that organisms react the same to temperature (the interaction).
+
+### b)
+
+```{r}
+temp_aov <- aov(
+  LabFitness ~ organism * temperature,
+  data = temp
+)
+```
+
+The residuals look good. There are a few deviating data points, but variance is homogenous and there are no identified outliers. The data could be log~10~ transformed, but that will also make the interpretation more difficult and I don't consider the trade-off worth it.
+
+```{r}
+#| fig-cap: "Model diagnostics. Formula: LabFitness ~ organism * temperature."
+#| fig-align: center
+par(mfrow = c(2, 2))
+plot(temp_aov)
+par(mfrow = c(1, 1))
+```
+
+The log~10~ transformed data actually looks worse so I discard that model.
+
+```{r}
+#| fig-cap: "Model diagnostics. Formula: log10(LabFitness) ~ organism * temperature."
+#| fig-align: center
+temp_aov_log <- aov(
+  log10(LabFitness) ~ organism * temperature,
+  data = temp
+  )
+par(mfrow = c(2, 2))
+plot(temp_aov_log)
+par(mfrow = c(1, 1))
+```
+
+### c)
+
+```{r}
+#| echo: false
+temp_aov_summary <- summary(temp_aov)
+```
+
+The test indicated a difference in fitness based on organism (F = 4.910, df = 3, p = 0.00483) as well as a difference in how the organisms handled the temperatures (interaction, F = 38.569, df = 3, p = 1.3e-12). There was, however, no difference based on temperature alone (F = 3.152, df = 1, p = 0.08245).
+
+```{r}
+#| echo: false
+temp_aov_tukey <- TukeyHSD(temp_aov)
+```
+
+A post-hoc analysis indicated that only the flour beetle and baker's yeast differed from one another. The boxplot overview would indicate that rockcress and *E. coli* reacted strongly to the different temperatures, and in opposite ways. Rockcress showed lower fitness at higher temperatures while *E. coli* showed higher fitness. The other organism seemed largely unaffected, leading me to believe that the temperatures are within their "comfort zone".
+
+### d)
+
+```{r}
+#| fig-cap: Fitness in the lab for four organism (*Arabidopsis thaliana*, *E. coli*, baker's yeast, *Tenebrio molitor*) at two temperatures (25 and 35 Celsius).
+#| fig-align: center
+ggplot(
+  temp,
+  aes(x = organism, y = LabFitness, fill = temperature)
+) +
+  theme_classic() +
+  geom_boxplot() +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(x = "Organism", y = "Lab Fitness", fill = "Temperature")
+```
+
+### e)
+
+The yeast and animal appear to have a different (and similar) viable temperature range, as opposed to the plant and bacteria. The experiment would need to be repeated for more temperatures to determine if the temperature range is larger or shifted. Based on previous litterature, it is reasonable that bacteria prefer the higher temperature. While animals that can move have the posibility to behaviourly manage their body temperature unlike plants. More information about the experimental design would need to be provided to assess how relevant that is to this dataset.
+
+## Question 4
+### Data
+
+```{r}
+#| echo: false
+beetles <- readr::read_delim(
+  "C:/Programming/Projects/BioInf-Master/Intro to stats for lifesciences/Exam HT 2025/LHdata.txt"
+)
+beetles$adaptation <- factor(beetles$adaptation)
+beetles$temperature <- factor(beetles$temperature)
+
+beetles_23 <- beetles[beetles$temperature == "23", ]
+beetles_35 <- beetles[beetles$temperature == "35", ]
+```
+
+```{r}
+#| echo: false
+beetles_summary <- beetles |>
+  dplyr::group_by(adaptation, temperature) |>
+  dplyr::summarise(dplyr::across(dplyr::where(is.numeric), mean))
+knitr::kable(beetles_summary)
+```
+
+### a)
+
+I think the distributions in the dataset are good enough for running PCA. They aren't perfect (most notably eggs and weight loss) but log~10~ transformation didn't make it considerably better.
+
+```{r}
+#| fig-height: 7
+#| fig-cap: Distribution of data.
+#| fig-align: center
+beetles_long <- beetles |>
+  tidyr::pivot_longer(
+    tidyselect::where(is.numeric),
+    values_to = "values",
+    names_to = "variable"
+  )
+
+ggplot(
+  beetles_long,
+  aes(x = values, fill = temperature)
+) +
+  theme_classic() +
+  geom_histogram(color = "grey") +
+  facet_wrap(variable ~ temperature, ncol = 4, scales = "free") +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(fill = "Temperature [C]", x = NULL) +
+  theme(legend.position = "bottom")
+```
+
+### b)
+
+#### Assay at 23 Celsius
+
+The first three components explain 81.6 % of variance (43.6 %, 20.0 %, and 17.9 % respectively), so I will focus on those. PC1 consists mainly of metabolic rate (CO~2~) and body size decresing with higher component scores, as opposed to water loss which increases. PC2 is dominated by weight loss which decreases along the component. PC3 indicates more eggs laid at higher component scores.
+
+```{r}
+#| tbl-cap: Summary of PCA analysis for the 23 Celsius assay.
+beetles_23_pca <- prcomp(
+  beetles_23[4:8],
+  scale = T
+)
+summary(beetles_23_pca)
+beetles_23_pca
+```
+
+#### Assay at 35 Celsius
+
+Similarly to the 23 degree assay, the 35 degree assay may also be mostly summarized by the first three principal components (42.2 %, 20.7 %, 18.2 % respectively). PC1 also summarises metabolism and body size, however, it now includes weight loss following the same trend of increasing along the component. PC2 mostly consists of water loss and eggs laid increasing with higher component score. PC3 is almost the same as PC2 except that water loss now decreases.
+
+```{r}
+#| tbl-cap: Summary of PCA analysis for the 23 Celsius assay.
+beetles_35_pca <- prcomp(
+  beetles_35[4:8],
+  scale = T
+)
+summary(beetles_35_pca)
+beetles_35_pca
+```
+
+### c)
+
+(I'm out of time.)
+
+Assay 23 degree has better separation than 35 degrees.
+
+```{r}
+#| fig-cap: PCA analysis of assay at 23 degrees Celsius.
+#| fig-align: center
+# Needs ggortify loaded to handle class prcomp
+autoplot(
+  beetles_23_pca,
+  data = beetles_23,
+  color = "adaptation",
+  loadings = T,
+  loadings.color = 'blue',
+  loading.label = T,
+  loadings.label.size = 3
+) +
+  theme_classic() +
+  labs(color = "Adaptation")
+```
+
+
+```{r}
+#| fig-cap: PCA analysis of assay at 35 degrees Celsius.
+#| fig-align: center
+# Needs ggortify loaded to handle class prcomp
+autoplot(
+  beetles_35_pca,
+  data = beetles_35,
+  color = "adaptation",
+  loadings = T,
+  loadings.color = 'blue',
+  loading.label = T,
+  loadings.label.size = 3
+) +
+  theme_classic() +
+  labs(color = "Adaptation")
+```
+
+## Question 5
+
+### a)
+
+The data comes from a Poisson distribution but since we are interested in a difference between groups (two factors with two groups each) I would like to try a non-parametric version of two-way ANOVA.
+
+### b)
+
+Due to the small sample size and distribution, I would instead look at random sampling in an attempt to approximate a normal distribution for the dataset as a more robust method.
+
+### c)
+
+```{r}
+#| echo: false
+grapes <- readr::read_delim(
+  "C:/Programming/Projects/BioInf-Master/Intro to stats for lifesciences/Exam HT 2025/grapes.txt"
+)
+```
+
+Possible confounding factors are location grown, since the different environment may affect reproduction (although I don't think this is makes a difference in this situation); the person counting seeds suddenly changed for only one verity, causing possible measurment inconsistencies.
+
+### d)
+
+I think there are 80 independent observations due to each grape comming from a seperate flower. More stems could be sampled, taking 80 grapes total from a larger number of stems.

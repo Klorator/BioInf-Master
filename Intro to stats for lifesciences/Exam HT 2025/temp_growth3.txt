@@ -1,0 +1,55 @@
+organism	temperature	LabFitness
+S. cerevisae	25C	0.1
+S. cerevisae	25C	0.13
+S. cerevisae	25C	0.12
+S. cerevisae	25C	0.13
+S. cerevisae	25C	0.09
+S. cerevisae	25C	0.09
+S. cerevisae	35C	0.08
+S. cerevisae	35C	0.12
+S. cerevisae	35C	0.14
+S. cerevisae	35C	0.07
+S. cerevisae	35C	0.013
+S. cerevisae	35C	0.11
+S. cerevisae	35C	0.09
+S. cerevisae	35C	0.15
+E. coli	25C	0.05
+E. coli	25C	0.04
+E. coli	25C	0.11
+E. coli	25C	0.05
+E. coli	25C	0.045
+E. coli	25C	0.07
+E. coli	35C	0.15
+E. coli	35C	0.16
+E. coli	35C	0.23
+E. coli	35C	0.18
+E. coli	35C	0.18
+E. coli	35C	0.19
+E. coli	35C	0.12
+T.molitor	25C	0.13
+T.molitor	25C	0.12
+T.molitor	25C	0.17
+T.molitor	25C	0.16
+T.molitor	25C	0.15
+T.molitor	25C	0.15
+T.molitor	35C	0.17
+T.molitor	35C	0.15
+T.molitor	35C	0.17
+T.molitor	35C	0.14
+T.molitor	35C	0.13
+T.molitor	35C	0.14
+T.molitor	35C	0.18
+A. thaliana	25C	0.2
+A. thaliana	25C	0.21
+A. thaliana	25C	0.11
+A. thaliana	25C	0.24
+A. thaliana	25C	0.19
+A. thaliana	25C	0.22
+A. thaliana	25C	0.27
+A. thaliana	35C	0.05
+A. thaliana	35C	0.01
+A. thaliana	35C	0.03
+A. thaliana	35C	0.03
+A. thaliana	35C	0.04
+A. thaliana	35C	0.07
+A. thaliana	35C	0.1
