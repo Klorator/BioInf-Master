@@ -63,6 +63,10 @@ pwd
         # [local file] [user@host]:[remote dir]  # upload
     # scp [local file] [user@host]:[remote dir] # from windows to linux server via ssh
         # -r Recursive, copies all subfolders and files
+        # Example executed from powershell:
+            # scp raha1670@solander.ibg.uu.se:/home/raha1670/1MB438/phylo_proj/Results/align_seq.cytb.fasta C:\Programming\Projects\
+            # Seems like having '-' in folder name causes problems?
+
     # md5sum [file] # hash fingerprint, for comparing files
 
     # find [dir] -name [file]
