@@ -19,7 +19,7 @@ begin taxa;
 end;
 
 begin trees;
-	tree tree_1 = [&R] (A_fulgen[&!color=#000000]:0.665148,(((((C_aureus:0.042222,C_lupusl:0.046321)[&bootstrap=99]:0.042182,(Cu_alpin:0.084608,L_pictus:0.107742)[&bootstrap=48]:0.020689)[&bootstrap=61]:0.020576,Ch_brach:0.126674)[&bootstrap=96]:0.071422,O_megalo:0.180621)[&bootstrap=25,!color=#ff00cc]:0.018577,(N_procyo:0.17325,U_cinere:0.148809)[&bootstrap=53]:0.035636)[&bootstrap=41]:0.029002,((V_ferril:0.072257,V_vulpes:0.068375)[&bootstrap=93]:0.038652,(V_lagopu:0.010155,V_macrot:0.010384)[&bootstrap=96]:0.059415)[&bootstrap=88]:0.075429);
+	tree tree_1 = [&R] (A_fulgen:0.772274,((((C_aureus:0.02537,C_lupusl:0.020723)[&bootstrap=100]:0.032805,Cu_alpin:0.087683)[&bootstrap=99]:0.011143,L_pictus:0.105567)[&bootstrap=100]:0.019397,Ch_brach:0.095237)[&bootstrap=100]:0.07035,(((((V_ferril:0.053978,V_vulpes:0.045827)[&bootstrap=100]:0.020453,(V_lagopu:0.009138,V_macrot:0.009003)[&bootstrap=100]:0.06086)[&bootstrap=100]:0.101692,N_procyo:0.164341)[&bootstrap=95]:0.017562,U_cinere:0.190795)[&bootstrap=58,!color=#ff00cc]:0.009209,O_megalo:0.148128)[&bootstrap=79]:0.024747);
 end;
 
 begin figtree;
@@ -35,7 +35,7 @@ begin figtree;
 	set appearance.selectionColour=#2d3680;
 	set branchLabels.colorAttribute="User selection";
 	set branchLabels.displayAttribute="bootstrap";
-	set branchLabels.fontName="Agency FB";
+	set branchLabels.fontName="sansserif";
 	set branchLabels.fontSize=14;
 	set branchLabels.fontStyle=0;
 	set branchLabels.isShown=true;
