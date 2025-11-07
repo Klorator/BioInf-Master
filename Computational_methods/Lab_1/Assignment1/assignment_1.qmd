@@ -1,0 +1,63 @@
+---
+title: "Computational Methods"
+subtitle: "Assignment 1"
+author: "Rasmus Hammar"
+format: typst
+---
+
+## Imports
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+## Variables and Constants
+
+For solving the equation system:
+
+$$
+\left(\begin{align*}
+6I_2 - 2I_3 &= 10 \\
+4I_2 + I_3 + 2I_4 + 2I_5 &= 17 \\ 
+2I_5 + 4I_6 &= 14 \\
+I_1 - I_2 + I_4 &= 0 \\
+I_3 - I_5 + I_6 &= 0 \\
+I_4 - I_5 + I_6 &= 0
+\end{align*}\right)
+$$
+
+```{python}
+circuit = np.array(
+    [
+        [0, 6, -2, 0, 0, 0],
+        [0, 4, 1, 2, 2, 0],
+        [0, 0, 0, 0, 2, 4],
+        [1, -1, 0, 1, 0, 0],
+        [0, 0, 1, 0, -1, 1],
+        [0, 0, 0, 1, -1, 1],
+    ]
+)
+voltages = np.array([10, 100, 14, 0, 0, 0])
+```
+
+## Solving the Equation System
+
+```{python}
+currents = np.linalg.solve(circuit, voltages)
+```
+
+Currents are:
+
+::::: {.columns}
+::: {.column}
+- $I_1 = `{python} round(currents[0])`$
+- $I_2 = `{python} round(currents[1])`$
+- $I_3 = `{python} round(currents[2])`$
+:::
+::: {.column}
+- $I_4 = `{python} round(currents[3])`$
+- $I_5 = `{python} round(currents[4])`$
+- $I_6 = `{python} round(currents[5])`$
+:::
+:::
