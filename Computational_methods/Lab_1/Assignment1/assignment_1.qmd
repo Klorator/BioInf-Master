@@ -12,7 +12,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-## Variables and Constants
+## Problem
+
+Solve for the currents in the following circuit:
+
+![Electrical system](Electrical_system.png){#fig-system fig-align="center"}
+
+## Variables
 
 For solving the equation system:
 
@@ -26,6 +32,8 @@ I_3 - I_5 + I_6 &= 0 \\
 I_4 - I_5 + I_6 &= 0
 \end{align*}\right)
 $$
+
+Matrices `circuit` and `voltages` are created.
 
 ```{python}
 circuit = np.array(
@@ -41,7 +49,20 @@ circuit = np.array(
 voltages = np.array([10, 100, 14, 0, 0, 0])
 ```
 
-## Solving the Equation System
+Inspecting the matrices:
+
+```{python}
+# | echo: false
+print("Circuit matrix:\n", circuit)
+print("Shape:", circuit.shape)
+print("Dimensions:", circuit.ndim)
+print("------------------------------")
+print("Voltages matrix:\n", voltages)
+print("Shape:", voltages.shape)
+print("Dimensions:", voltages.ndim)
+```
+
+## Solution
 
 ```{python}
 currents = np.linalg.solve(circuit, voltages)
@@ -49,15 +70,13 @@ currents = np.linalg.solve(circuit, voltages)
 
 Currents are:
 
-::::: {.columns}
-::: {.column}
-- $I_1 = `{python} round(currents[0])`$
-- $I_2 = `{python} round(currents[1])`$
-- $I_3 = `{python} round(currents[2])`$
-:::
-::: {.column}
-- $I_4 = `{python} round(currents[3])`$
-- $I_5 = `{python} round(currents[4])`$
-- $I_6 = `{python} round(currents[5])`$
-:::
-:::
+```{python}
+# | fig-cap: "Theoretically estimated currents based on system in @fig-system."
+# | fig-align: center
+x_axis = ["$I_1$", "$I_2$", "$I_3$", "$I_4$", "$I_5$", "$I_6$"]
+plt.figure(1)
+plt.bar(x_axis, currents, color="blue")
+plt.ylabel("Current [A]")
+plt.title("Currents $I_1$-$I_6$ in the circuit")
+plt.show()
+```
