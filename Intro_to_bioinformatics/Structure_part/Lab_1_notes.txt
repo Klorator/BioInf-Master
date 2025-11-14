@@ -1,0 +1,128 @@
+Structure bioinformatics
+Lab 1 -- PyMol Basics
+
+Q1. Write down the one-letter abbreviations for 
+    amino acids 15, 35, 37, 53, 118, 130, 150, 28, 132 and 136 
+    in the 1a6n structure. Which word do they form?
+
+Alanin (A15), Serine (S35), Proline (P37),
+A53, Arginine (R118), A130, Glycine (G150),
+Isoleucine (I28), Asparagine (N132), Glutamic acid (E136)
+
+Answer: ASPARAGINE
+
+
+Q2. How many α-helices and how many β-strands can you find in myoglobin?
+
+Answer: 8 a-helices and 0 b-strands.
+
+
+Q3. Locate the helix around amino acid 65. 
+    Which are the first and the last amino acids of this helix?
+
+Answer: First = E59, Last = K78
+
+
+Q4. Can you determine the direction (N->C) of this α-helix? 
+    Hide the cartoon and show lines, color by element. 
+    How are the backbone carbonyl groups oriented in relation 
+    to the direction of the helix? How are the side chains 
+    oriented in relation to the direction of the helix?
+
+Answer: It goes from K78 to E59 => N->C
+    Backbone carbonyls point towards the C-direction.
+    Side chains point outwards from the a-helix.
+
+
+Q5. Explain why α-helices are polar. It may help you to look 
+    at the figure below. Can you find any capping residues 
+    that stabilize the partial charges at the ends of the helix?
+
+Answer: The *inside* of an a-helix is always polar due to the
+    carbonyl and nitrogen in the backbone. These enable the h-bonds
+    which form the helix.
+    Capping residues: N-terminal = E59 & D60, C-terminal = K77 & K78
+
+
+Q6. Describe the main-chain hydrogen-bonding pattern in an α-helix. 
+    Include the atom names and residue numbers for the interacting atoms.
+
+Answer: The h-bond pattern is between every 4th residue.
+    N->C direction: E59(O)-K63(N), D60-H64, L61-G65, K62-V66,
+    K63-T67, H64-V68, G65-L69, V66-T70, T67-A71, V68-L72,
+    L69-G73, T70-A74, A71-I75, L72-L76, G73-K77, (missing? A74-K78)
+
+
+Q7. Is this helix left-handed or right-handed?
+Answer: Right-handed
+
+
+Q8. Describe how the secondary structure elements are 
+    arranged – are the helices parallel or have different orientations?
+
+Answer: Helices have mostly different orientations, 
+    with a few pairs being (anti)parallel.
+
+
+Q9. Where are the hydrophobic side chains mostly located? 
+    Why? Where are the water molecules? What does this tell 
+    you about the properties of the surface of myoglobin?
+
+Answer: Hydrophobic side chains are mostly on the inside. Since the 
+    protein, in vivo, is in water, polar side chains face outward and 
+    non-polar face inward, i.e. away from the surrounding water.
+
+
+Q10. Which residue in the protein is involved in coordinating 
+    the heme iron? What is the closest distance between this 
+    residue and iron?
+
+Answer: Closest residue is H93 (Histidine 93).
+    Closest distance to Fe is 2.1 Å.
+
+
+Q11. How are the globin-fold subunits packed together 
+    in a tetramer – can you find a 4-fold symmetry or is 
+    this a “dimer of dimers”?
+
+Answer: Hemoglobin looks like two subunits with six helices, and
+    two subunits with five helices.
+
+
+Q12. Compare the folds of myoglobin and hemoglobin. 
+    How similar are the two structures, visually and by the RMS value?
+
+Answer: They look very similar. 
+    Excecutive RMSD = 1.250 (124 to 124 atoms).
+
+
+Q13. How would you describe the tertiary structure?
+Answer: Seven a-helices anti-parallel to each other.
+
+
+Q14. Where are the hydrophobic side chains mostly located? 
+    Why? Compare with your observations in Q9.
+Answer: Hydrophobic side chains are spread throughout the middle 
+    of the structure, but not at the ends. Compared to a globular protein
+    this feels more like a membrane protein.
+
+
+Q15. You are a scientist studying the function of neuroglobin. 
+    You want to know how its structure compares to structures of 
+    myoglobin and hemoglobin. You have access to the pdb file and 
+    to a computer running PyMOL. What would you do?
+
+Answer: Visually compare the protein structures.
+    Align the structures and compare RMSD values.
+    Global sequence alignment.
+
+
+Q16. In this tutorial, you have displayed proteins in different 
+    representations. Describe for what type of analysis the 
+    following display options are useful:
+a) all-atom representation (“lines” or “sticks”)
+    Interactions between specific atoms.
+b) cartoon representation
+    Secondary structures.
+c) space-filling (“spheres”) or surface representation
+    Volume/pockets and polar/non-polar areas.
