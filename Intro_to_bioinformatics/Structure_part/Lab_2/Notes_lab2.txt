@@ -1,0 +1,176 @@
+Structure bioinformatics - Lab 2 Notes
+----------------------------------------
+
+Q1: How would you qualify the protein based on the 
+    secondary structure content (all-alpha, 
+    all-beta, or mixed alpha-beta)?
+Answer: Mixed alpha-beta
+
+
+Q2: How many domains does the structure contain, 
+    and do they have the same topology or are 
+    their folds different?
+Answer: Two domains, consisting of four beta-sheets 
+    and a few alpha-helixes each. Topology is the same.
+
+
+Q3: Why does Molprobity decide that some residues 
+    should be flipped?
+Answer: Because Asn, Gln, and His are often oriented 
+    wrong in crystallography. So their orientation
+    is recalculated to reduce steric clashes.
+    - A 25 GLN
+    - A 75 ASN
+
+
+Clashscore: 
+    Clashscore, all atoms:	76.95	0th percentile* (N=1784, all resolutions)
+Geometry stats:
+    Poor rotamers	5	3.18%	Goal: <0.3%
+    Favored rotamers	143	91.08%	Goal: >98%
+    Ramachandran outliers	3	1.70%	Goal: <0.05%
+    Ramachandran favored	168	95.45%	Goal: >98%
+    MolProbity score^	3.05	21st percentile* (N=27675, 0Å - 99Å)
+    Cβ deviations >0.25Å	0	0.00%	Goal: 0
+    Bad bonds:	1 / 1452	0.07%	Goal: 0%
+    Bad angles:	34 / 1950	1.74%	Goal: <0.1%
+
+
+Q4: How many residues in the structure are located 
+    outside the allowed regions?
+Answer: Three residues are Ramachandran outliers.
+    - 57 Pro (-112.7, 164.2)
+    - 69 Leu (125.5, 79.5)
+    - 92 Val (159.8, 144.6)
+
+
+Q5: Based on the MolProbity analysis, does ProX 
+    resemble a protein? Is it worth analyzing further?
+Answer: It looks terrible!
+
+
+Q6: How often is Dali database updated? Which databases 
+    are used by DALI? What are the differences between 
+    heuristic and exhaustive searches? Pros and cons.
+Answer: Dali is updated weekly. It uses PDB and
+    AlphaFold DB databases.
+        Heuristic searches are faster because it makes
+    good guesses on where to look and skips other parts.
+    Exhaustive searches look everywhere but are slower.
+
+
+Q7: When was the PDBeFold webpage last updated? 
+    Do you think this is recent enough? Figure 5.2 
+    will help you answer this question.
+Answer: Last version update was 2014. Not many new folds
+    have been added since then.
+
+
+Q8: What types of scores (e.g., Q-score, P-score, 
+    Z-score) are used to rank hits, and how do they 
+    differ in evaluating structural similarity, 
+    statistical significance, and alignment quality?
+Answer: 
+    Q-score indicates C-alpha alignment. Includes 
+        alignment length and RMSD. Higher is better.
+    P-score indicates probability of achieving a 
+        better match by chance. Includes RMSD, 
+        n-aligned residues, n-gaps, n matched secondary
+        structures elements. Higher is better.
+    Z-score indicates statistical significance following
+        a Gaussian distribution. Higher is better.
+
+
+Q9: What is the sequence identity between 1po6 and 
+    the query, and how does its Z-score reflect the 
+    significance and quality of the structural match?
+Answer: 
+    Seq. ident. = 65 %
+    Z-score = 15.3, (+2 => 2 SD over mean)
+
+
+Q10: How many matches did the DALI server yield 
+    against PDB25 (a non-redundant subset of 
+    structures with <25% sequence identity) and PDB90 
+    (>90% sequence identity)? Do these numbers align 
+    with the expected differences between the databases?
+Answer: 
+    Dali matches to PDB25 = 342
+    Dali matches to PDB90 = 524
+    The PDB90 database is larger, so more hits 
+    are expected.
+
+Q11: How do you explain the different number of hits 
+    between PDBeFold and Dali?
+Answer: PDBeFold matches = 28
+    While there haven't been many new folds since 2014,
+    the number of proteins cataloged has increased.
+
+
+Q12: What is the most probable function of our 
+    mysterious protein?
+Answer: "HETEROGENEOUS NUCLEAR RIBONUCLEOPROTEIN"
+    RNA-binding in the nucleus.
+
+
+Q13: Is the amino acid located in the core or on the 
+    surface of the protein? How well does it fit the 
+    electron density map? Compare its position and fit 
+    to residues in the "blue area" of the protein.
+Answer: Surface/facing outwards.
+    The blue areas seem to have more electron density,
+    with electrons inside the structure.
+
+
+Q14: Was Arg 97 built into the structure in a wrong way 
+    or are there objective reasons that make building 
+    of this residue difficult?
+Answer: Maybe? 
+
+
+Q15: What is the name used for the domain that is 
+    found in the hnRNP core protein A1? How many 
+    “architectures” of this domain are there?
+Answer: "hnRNP A1, RNA recognition motif 1 (IPR034845)"
+    There are 8000 architectures.
+
+
+Q16: What is the function of the hnRNP core protein A1? 
+    Navigate through the Structure tab in UniProt and 
+    explore the list to visually compare the 
+    AlphaFold DB structure with the X-ray structures. 
+    What are the differences?
+Answer: Packaging of pre-mRNA, transport of poly(A) mRNA
+    from nucleus to cytoplasm, modulation of splice sites.
+    Difference was a big loop.
+
+
+Q17: How many and which residues are within hydrogen 
+    bonding distance?
+    Answer: Ten residues
+    - Lys 15
+    - Gly 20
+    - Asp 42
+    - Arg 55
+    - Glu 85
+
+    - Lys 87
+    - Arg 88
+    - Val 90
+    - Arg 92
+    - Ser 95
+
+
+Q18: What amino acid types (hydrophobic, +1 charge, 
+    -1 charge …) mediate the interaction?
+Answer: 
+
+
+Q19: Are the hydrogen bonds formed mainly by sidechain 
+    or backbone atoms?
+    Answer: 
+
+
+Q20: Would you bet that our protein X could bind 
+    nucleic acids? (motivate your answer)
+Answer: 
