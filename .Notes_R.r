@@ -173,4 +173,5 @@ autoplot(
   loadings.label = TRUE,
   loadings.label.size = 3
 )
-# Q1C: Can you detect any differences between the two species when looking at the sexes separately? And what would be your overall conclusion regarding morphological differences in these crabs?
+# Q1C: Can you detect any differences between the two species when looking at the sexes separately?
+#      And what would be your overall conclusion regarding morphological differences in these crabs?
