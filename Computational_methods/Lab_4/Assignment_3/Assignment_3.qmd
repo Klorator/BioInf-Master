@@ -1,0 +1,31 @@
+---
+title: "Computational Methods"
+subtitle: "Assignment 3"
+author: "Rasmus Hammar"
+date: 2025-11-27
+format:
+    typst: default
+execute:
+    echo: true
+    warning: false
+    error: false
+---
+
+## Imports
+
+```{python}
+
+```
+
+## a)
+Reproducing Figure 2, a and b from the article [@vilarMechanismsNoiseresistanceGenetic2002].
+
+```{python}
+# | label: ODE function
+def ode_rhs(t, y):
+    yt = []
+
+    return yt
+```
+
+## b)
