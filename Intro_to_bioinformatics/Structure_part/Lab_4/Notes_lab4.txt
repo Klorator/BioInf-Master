@@ -1,0 +1,65 @@
+Notes for Lab 4: Molecular docking
+
+Question 1: Try to identify three molecular 
+    interactions between the ligand and the residues of the protein 
+    receptor. Write down type of interaction, as well as the type of 
+    residue with its corresponding residue number. What, according 
+    to you, is the driving force for this particular ligand to bind 
+    the receptor in this way?
+Answer:
+    There seems to be a lot of aromatic stacking.
+        TRP 100
+        TRP 386
+        PHE 390
+    Hydrogen bonds.
+        ASP 114
+        (TYR 416, ?)
+    The main driving force is hydrophobic interactions.
+
+
+Question 2: Do all docked poses geometrically align with the 
+    crystal structure binding pose, i.e. bioactive conformationa? 
+    The poses that align well, how is their total energy? Are molecules 
+    that are in a bioactive conformation always among the lowest 
+    in energy? Was the redocking of the ligand successful?
+Answer:
+    The poses with lowest energy align reasonably close with the crystal
+    structure. Their total energy is clearly seperated from the rest
+    as seen in Figure 3, at around -60 Docking Score. 
+    Thermodynamically, the best binding should have the lowest energy, 
+    but I suppose if it's too low it would permanently bind, 
+    becoming an inhibitor. The redocking seems to have been successful.
+
+
+Question 3A: What can you tell about the properties of the ligands, 
+    do they follow a specific rule? Is there any particular property 
+    in the ligands/decoys that supports your answer in Question 1 
+    about molecular interactions? Do the decoys have similar properties 
+    to the approved drugs?
+Answer:
+    The ligands have similar number of ring structures and a positive
+    charge in the middle.
+    The decoys look very similar, but often have more polar areas
+    breaking up the hydrophobic interactions.
+
+
+Question 3B: Based on the relative ranks and names of the first 
+    compounds, can you draw an estimate of the ROC curve on the 
+    grid below? Does this model enrich ligands, decoys, or is there 
+    no preference?
+Answer:
+    It seems to enrich ligands as there are more ligands in the top ranks.
+
+
+Question 4: You work on a drug discovery project in a pharmaceutical 
+    company tackling Parkinson’s disease. Pick three compounds from 
+    the screen you like and elaborate why. Think in terms of the 
+    molecular interactions and potential chemical expansion into a 
+    leadlike molecule. Keep your favorites in a session that you can 
+    show to the teaching assistant.
+Answer:
+    22 -- has a ring in the outer part, could be used for reactions in case
+        we need specific properties.
+    3 & 83 -- smaller, easier to get through the blood-brain barrier.
+        Problem, 3 has a lot of polar areas making it less lipophylic.
+        83 only has two positive areas.
