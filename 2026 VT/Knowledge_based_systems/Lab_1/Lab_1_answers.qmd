@@ -1,0 +1,171 @@
+---
+title: "Knowledge based systems"
+subtitle: "Lab 1"
+format: typst
+---
+
+```{r}
+library(cluster)
+```
+
+## Task 1
+
+a. Installed `cluster`
+
+b. There are 50 flowers per species.
+
+c. Average petal length is 3.758 and sepal length 5.843.
+
+```{r}
+summary(iris)
+```
+
+d. `iris$Species` is a character vector of class "factor" with three levels ("setosa", "versicolor", "virginica").
+
+```{r}
+str(iris$Species)
+```
+
+e. I will focus on sepal length and width.
+
+```{r}
+f1 <- "Sepal.Length"
+f2 <- "Sepal.Width"
+features <- c(f1, f2)
+selectedIris <- iris[, features]
+```
+
+## Task 2
+
+a. The general k-means clustering algorithm is to select k random points as initial centers, assign all points to nearest center, compute new center and reassign all points to nearest center. Repeat until centers don't change.
+
+b.
+
+```{r}
+specs <- iris$Species # select last column
+specsLevs <- levels(specs) # select levels of variables (levels works only with Factor)
+specsNum <- length(specsLevs) # how many = length
+
+fitKmeans <- kmeans(selectedIris, specsNum, iter.max = 100)
+```
+
+```{r}
+clusplot(
+  selectedIris,
+  fitKmeans$cluster,
+  color = T,
+  shade = T,
+  labels = 0,
+  lines = 0,
+  main = "k-means clustering"
+)
+```
+
+Fig.1
+
+c. The clusters may change depending on random starting points.
+
+d. The clusters are mostly separate with a little overlap.
+
+## Task 3
+
+```{r}
+d <- dist(selectedIris) # estimate distance
+fitHier <- hclust(d, method = "ward.D")
+clusterCut <- cutree(fitHier, specsNum)
+```
+
+a. The general hierarchical clustering algorithm is to compute a distance matrix, unify the two points with smallest distance, recompute the new distance matrix, and repeat until all points are in the same group.
+
+b. 
+
+```{r}
+# Fig.2a
+clusplot(
+  selectedIris,
+  clusterCut,
+  color = TRUE,
+  shade = TRUE,
+  labels = 0,
+  lines = 0,
+  main = "hierarchical clustering"
+)
+```
+
+Fig.2a
+
+c. The clusters will be the same when using the same distance method.
+
+d. Clusters are separated with a little overlap.
+
+e. 
+
+```{r}
+# Fig.2b
+dend <- as.dendrogram(fitHier)
+nodeParams <- list(pch = c(NA, 18), cex = 0.5, col = "darkgray")
+plot(
+  dend,
+  type = "rectangle",
+  nodePar = nodeParams,
+  leaflab = "none",
+  main = "hierarchical clustering"
+)
+rect.hclust(fitHier, k = 3, border = "darkorange")
+```
+
+Fig.2b
+
+f. A dendrogram will show how far apart the clusters are (compared to cladogram).
+
+g. A dendrogram shows how points cluster together at all different levels/number of groups, as well as the length of the branches showing the distance between nodes.
+
+## Task 4
+
+```{r}
+hierCentr <- aggregate(
+  data.frame(clusterCut, selectedIris),
+  by = list(clusterCut),
+  FUN = mean
+)
+```
+
+
+```{r}
+#| fig-subcap:
+#|    - "k-means clustering"
+#|    - "hierarchiacal clustering"
+#| layout-ncol: 2
+plot(selectedIris, type = "n", main = "k-means clustering")
+text(
+  selectedIris,
+  labels = iris$Species,
+  col = c("orangered", "limegreen", "dodgerblue")[fitKmeans$cluster]
+)
+points(fitKmeans$centers[, features], col = "yellow", pch = 15, cex = 1.5)
+
+# hierarchical
+plot(selectedIris, type = "n", main = "hierarchical clustering")
+text(
+  selectedIris,
+  labels = iris$Species,
+  col = c("darkviolet", "darkorange", "seagreen4")[clusterCut]
+)
+points(hierCentr[, features], col = "yellow", pch = 15, cex = 1.5)
+```
+
+Fig.3
+
+a. In the hierarchical clustering there are a few versicolor wrongly grouped with setosa.
+
+b. The yellow squares represent the centroids of each group.
+
+## Task 5
+
+a. Unsupervised learning uses the data without potentially being biased due to _a priori_ assumptions.
+
+b. 
+* Pros: Avoids potential bias, helps identify unknown groups.
+* Cons: k-means doesn't handle non-uniform/globular shaped clusters reliably, only uses two dimensions.
+
+c. Differentiating between species based on physiological measurements, and determining evolutionary relationships.
