@@ -1,0 +1,32 @@
+---
+title: "Statistical inference"
+subtitle: "Assignment 1 reflections"
+author: "Rasmus Hammar"
+format: typst
+---
+
+a)
+For the most part, but it was quite heavy on solving programming. That was the largest time sink and I feel that it detracted somewhat from being able to focus/spend time on thinking through the application (I have other courses etc. that also require time).
+
+b)
+Area under curve = 1, not height of curve.
+
+c)
+Randomly (with probability) pick one of the PDFs, then pick a random observation from that distribution. Repeat. Use the urn method.
+
+(Difference between urn and inverse transform sampling?)
+
+d)
+Vector in => vector out (quite reasonable), and the covariance matrix provides both within variance and between covariance => 2*2 matrix.
+
+e)
+I think it was a good assignment, but I'm too stressed to enjoy it/learn properly.
+
+f)
+At least with AI I don't have to spend an extra 10-20 hours reading documentation and troubleshooting to make the code work.
+
+g)
+Not really.
+
+h)
+Less than 20 hours but I wish I could have spent more time figuring things out myself.

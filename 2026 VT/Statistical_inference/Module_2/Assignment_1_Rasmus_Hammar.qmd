@@ -1,0 +1,402 @@
+---
+title: "Statistical inference"
+subtitle: "Assignment 1"
+author: "Rasmus Hammar"
+format: typst
+---
+## Imports
+
+```{python}
+# | label: Imports
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+```
+
+## Part A
+
+### A:1
+
+```{python}
+#| label: "A:1"
+# Urn
+values = np.asarray([1,2,3])
+counts = np.asarray([2, 3, 195])
+urn_A1 = np.repeat(values, counts)
+
+# Draw with replacement
+N = 100
+draw_w_rep = np.random.choice(urn_A1, size = N, p = None, replace = True)
+print(draw_w_rep)
+```
+
+### A:2
+
+```{python}
+#| label: "A:2 Urn"
+# Urn
+values = np.asarray([54, 66, 70, 72, 97])
+counts = np.asarray([1, 1, 1, 1, 1])
+urn_A2 = np.repeat(values, counts)
+```
+
+```{python}
+# | label: A:2 MC sampling
+N = 3
+
+casette_times = []
+for i in range(100000):
+    casette_run = np.random.choice(urn_A2, size=N, p=None, replace=True)
+    casette_times.append(sum(casette_run))
+
+percent_longer_than_200 = len([v for v in casette_times if v > 200]) / len(
+    [v for v in casette_times if v <= 200]
+)
+print(percent_longer_than_200)
+```
+
+### A:3
+
+```{python}
+#| label: A:3 Urn
+# Urn
+values = np.asarray(["White", "Red"])
+counts = np.asarray([7, 93])
+urn_A3 = np.repeat(values, counts)
+```
+
+
+```{python}
+# | label: A:3 MC simulation
+N = 96
+
+well_plates = []
+for i in range(1000):
+    well_plate_96 = np.random.choice(urn_A3, size=N, p=None, replace=True)
+    red = [True for r in well_plate_96 if r == "Red"]
+    # well_plates.append(sum(red) / (1 - sum(red)))
+    well_plates.append(sum(red))
+```
+
+```{python}
+# | fig-cap: Histogram showing distribution of pipetting accuracy.
+# | label: A:3 Simulation histogram
+plt.hist(well_plates, bins=16, edgecolor="black")
+plt.title("Pipetting robot accuracy distribution")
+plt.xlabel("n correct wells")
+plt.ylabel("n plates")
+plt.show()
+```
+
+## Part B
+
+### B:1
+
+a)
+
+```{python}
+# | fig-cap: Normal distribution with mu = 0 and sigma = 2.
+# | label: B:1 a plot normal dist
+mu = 0
+sigma = 2
+N = 1000
+x_axis = np.linspace(-5, 5, N)
+pdf_normal = stats.norm.pdf(x_axis, mu, sigma)
+plt.plot(x_axis, pdf_normal)
+plt.ylabel("PDF")
+plt.show()
+```
+
+```{python}
+# | fig-cap: Beta distribution with alpha = 2 and beta = 5.
+# | label: B:1 a plot beta dist 1
+alpha = 2
+beta = 5
+N = 1000
+x_axis = np.linspace(0, 1, N)
+pdf_beta = stats.beta.pdf(x_axis, alpha, beta)
+plt.plot(x_axis, pdf_beta)
+plt.ylabel("PDF")
+plt.show()
+```
+
+```{python}
+# | fig-cap: Beta distribution with alpha = 3 and beta = 3.
+# | label: B:1 a plot beta dist 2
+alpha = 3
+beta = 3
+N = 1000
+x_axis = np.linspace(0, 1, N)
+pdf_beta = stats.beta.pdf(x_axis, alpha, beta)
+plt.plot(x_axis, pdf_beta)
+plt.ylabel("PDF")
+plt.show()
+```
+
+
+b)
+
+```{python}
+# | label: Random samples normal dist
+mu = 0
+sigma = 2
+N = 10
+data_rnorm = np.random.normal(mu, sigma, N)
+print(data_rnorm)
+```
+
+```{python}
+# | label: Random samples beta 1
+alpha = 2
+beta = 5
+N = 10
+data_rbeta1 = np.random.beta(alpha, beta, N)
+print(data_rbeta1)
+```
+
+```{python}
+# | label: Random samples beta 2
+alpha = 3
+beta = 3
+N = 10
+data_rbeta2 = np.random.beta(alpha, beta, N)
+print(data_rbeta2)
+```
+
+### B:2
+
+a)
+
+```{python}
+#| label: List of PDFs
+PDF_list = np.array([
+    [-2, 0.1],
+    [2, 0.1],
+    [0, 1]
+])
+```
+
+```{python}
+# | fig-cap: p(x)
+# | label: Plot combined PDFs
+x_axis = np.linspace(-3, 3, 100)
+# Plot PDFs
+for params in PDF_list:
+    pdf_norm = stats.norm.pdf(x_axis, params[0], params[1])
+    plt.plot(x_axis, pdf_norm, label=f"N(mu = {params[0]}, sigma = {params[1]})")
+plt.ylabel("Density")
+plt.legend()
+plt.show()
+```
+
+b)
+
+```{python}
+#| label: Urn PDFs
+w1 = 0.05
+w2 = w1
+w3 = 0.9
+
+pdf_index = np.asarray([0, 1, 2])
+weights = np.asarray([int(w1*100), int(w2*100), int(w3*100)])
+urn_B2 = np.repeat(pdf_index, weights)
+```
+
+```{python}
+# | label: Draw random pdf
+N = 1000  # n samples total
+data = []
+for i in range(N):
+    rPDF = np.random.choice(urn_B2, size=1, p=None, replace=True)
+    mu, sigma = PDF_list[rPDF[0]]
+    data.append(np.random.normal(mu, sigma, 1)[0])
+```
+
+```{python}
+# | fig-cap: Combined PDFs histogram.
+# | label: B:2 histogram
+plt.hist(data, bins = 100, edgecolor = "black", density=True)
+plt.show()
+```
+
+### B:3
+
+a)
+
+```{python}
+#| label: Normal dist 2d 1
+N = 1000
+mu_2d = np.array([0, 0])
+sigma_2d = np.array([[1, 0.7], [0.7, 3]])
+
+rnorm_2d = np.random.multivariate_normal(mu_2d, sigma_2d, N)
+```
+
+```{python}
+# | fig-cap: Multivariate normal distribution with mu = [0, 0] and covariance matrix = [[1, 0.7], [0.7, 3]].
+# | label: Normal dist 2d 1 plot
+plt.plot(rnorm_2d[:, 0], rnorm_2d[:, 1], "bo", markersize=2)
+```
+
+b)
+
+```{python}
+# | label: Normal dist 2d 2
+N = 1000
+mu_2d = np.array([0, 0])
+sigma_2d = np.array([[1, -0.7], [-0.7, 3]])
+
+rnorm_2d = np.random.multivariate_normal(mu_2d, sigma_2d, N)
+```
+
+```{python}
+# | fig-cap: Multivariate normal distribution with mu = [0, 0] and covariance matrix = [[1, -0.7], [-0.7, 3]].
+# | label: Normal dist 2d 2 plot
+plt.plot(rnorm_2d[:, 0], rnorm_2d[:, 1], "bo", markersize=2)
+```
+
+c)
+
+```{python}
+#| label: Normal dist 2d 3
+N = 1000
+mu_2d = np.array([0, 0])
+sigma_2d = np.array([[1, 0], [0, 3]])
+
+rnorm_2d = np.random.multivariate_normal(mu_2d, sigma_2d, N)
+```
+
+```{python}
+# | fig-cap: Multivariate normal distribution with mu = [0, 0] and covariance matrix = [[1, 0], [0, 3]].
+# | label: Normal dist 2d 3 plot
+plt.plot(rnorm_2d[:, 0], rnorm_2d[:, 1], "bo", markersize=2)
+```
+
+## Part C
+
+### C:1
+
+a)
+
+```{python}
+# | label: Cell cycle markov model params
+transition_matrix = np.array(
+    [
+        [0.8, 0.2, 0],  # 0 = G
+        [0.8, 0, 0.2],  # 1 = M
+        [0.1, 0, 0.9],  # 2 = A
+    ]
+)
+
+def next_state(current, P):
+    r = np.random.rand()  # uniform in [0, 1)
+    cumulative = np.cumsum(P[current])
+
+    # Find the first index where r <= cumulative probability
+    return np.searchsorted(cumulative, r)
+```
+
+```{python}
+# | label: Cell cycle Markov model simulation
+steps = 2000
+state_current = 0
+states = [state_current]
+for i in range(steps):
+    state_current = next_state(state_current, transition_matrix)
+    states.append(state_current)
+```
+
+b)
+
+```{python}
+# | fig-cap: Cell cycle states.
+# | label: Markov model histogram
+plt.hist(states[1000:], density=True)
+plt.xticks([0, 1, 2], ["G", "M", "A"])
+plt.show()
+```
+
+### C:2
+
+```{python}
+# | label: Cell cycle markov model params 2
+transition_matrix = np.array(
+    [
+        [0, 1, 0, 0, 0],  # 0 = Start
+        [0, 0.9, 0.1, 0, 0],  # 1 = E
+        [0, 0, 0, 1, 0],  # 2 = 5
+        [0, 0, 0, 0.9, 0.1],  # 3 = I
+        [0, 0, 0, 0, 0],  # 4 = End
+    ]
+)
+
+nucleotides = np.asarray(["A", "C", "G", "T"])
+
+p_nucleotide_E = np.asarray([1, 1, 1, 1])
+urn_E = np.repeat(nucleotides, p_nucleotide_E)
+
+p_nucleotide_5 = np.asarray([5, 0, 95, 0])
+urn_5 = np.repeat(nucleotides, p_nucleotide_5)
+
+p_nucleotide_I = np.asarray([4, 1, 1, 4])
+urn_I = np.repeat(nucleotides, p_nucleotide_I)
+
+
+def next_state(current, P):
+    r = np.random.rand()  # uniform in [0, 1)
+    cumulative = np.cumsum(P[current])
+
+    # Find the first index where r <= cumulative probability
+    return np.searchsorted(cumulative, r)
+```
+
+```{python}
+# | label: Cell cycle Markov model simulation 2
+steps = 20
+state_current = 0
+states = [state_current]
+bases = []
+for i in range(steps):
+    state_current = next_state(state_current, transition_matrix)
+    states.append(state_current)
+
+    if state_current == 1:  # E
+        bases.append(np.random.choice(urn_E, size=1, p=None, replace=True))
+    elif state_current == 2:  # 5
+        bases.append(np.random.choice(urn_5, size=1, p=None, replace=True))
+    elif state_current == 3:  # I
+        bases.append(np.random.choice(urn_I, size=1, p=None, replace=True))
+
+print(np.array(states).flatten())
+print(np.array(bases).flatten())
+```
+
+
+## Part D
+
+### D:1
+
+a)
+
+```{python}
+#| label: Linear x and y
+N = 10
+x = np.random.uniform(0, 1, N)
+y = [2*n+4 for n in x]
+```
+
+b)
+
+```{python}
+# | label: Linear x and y with noise/error
+N = 10
+x = np.random.uniform(0, 1, N)
+y = [2 * n + 4 for n in x]
+
+x_obs = []
+y_obs = []
+for i in range(N):
+    rnorm = np.random.normal(0, 0.3, 2)
+    x_obs.append(x + rnorm[0])
+    y_obs.append(y + rnorm[1])
+```
