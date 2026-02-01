@@ -1,6 +1,7 @@
 ---
 title: "Knowledge based systems"
 subtitle: "Lab 2"
+author: "Rasmus Hammar"
 format: typst
 ---
 
