@@ -1,0 +1,56 @@
+---
+title: "Assignment 2"
+subtitle: "Statistical inference"
+author: "Rasmus Hammar"
+format: typst
+---
+
+## Imports 
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+## Part A
+
+### A:1
+
+a)
+
+Generate data `D` with N = 20 from N(mu = 5, sigma = 2.7)
+
+```{python}
+N = 20
+mu = 5
+sigma = 2.7
+D = np.random.normal(mu, sigma, N)
+```
+
+b)
+
+```{python}
+D_mean = np.mean(D)
+D_sd = np.std(D)
+
+print("D mean = ", D_mean)
+print("D standard deviation = ", D_sd)
+```
+
+c)
+
+```{python}
+N_b = 1000
+B = []
+for i in range(N_b):
+    d_star = np.random.choice(D, size=20, replace=True)
+    d_star_mean = np.mean(d_star)
+    d_star_sd = np.std(d_star)
+    B.append([d_star, d_star_mean, d_star_sd])
+```
+
+d)
+
+```{python}
+
+```

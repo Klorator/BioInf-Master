@@ -45,12 +45,12 @@ urn_A2 = np.repeat(values, counts)
 N = 3
 
 casette_times = []
-for i in range(100000):
+for i in range(10000):
     casette_run = np.random.choice(urn_A2, size=N, p=None, replace=True)
     casette_times.append(sum(casette_run))
 
 percent_longer_than_200 = len([v for v in casette_times if v > 200]) / len(
-    [v for v in casette_times if v <= 200]
+    casette_times
 )
 print(percent_longer_than_200)
 ```
@@ -74,7 +74,6 @@ well_plates = []
 for i in range(1000):
     well_plate_96 = np.random.choice(urn_A3, size=N, p=None, replace=True)
     red = [True for r in well_plate_96 if r == "Red"]
-    # well_plates.append(sum(red) / (1 - sum(red)))
     well_plates.append(sum(red))
 ```
 
@@ -168,24 +167,29 @@ print(data_rbeta2)
 a)
 
 ```{python}
-#| label: List of PDFs
-PDF_list = np.array([
-    [-2, 0.1],
-    [2, 0.1],
-    [0, 1]
-])
+# | label: List of PDFs
+PDF_list = np.array([[-2, 0.1], [2, 0.1], [0, 1]])
+weights = np.array([0.05, 0.05, 0.9])
+
+
+def pdf_combined(x, pdf_params, weights):
+    pdf_norm = []
+    for params in pdf_params:
+        pdf_norm.append(stats.norm.pdf(x, params[0], params[1]))
+    combined = (
+        weights[0] * pdf_norm[0] + weights[1] * pdf_norm[1] + weights[2] * pdf_norm[2]
+    )
+    return combined
 ```
 
 ```{python}
-# | fig-cap: p(x)
-# | label: Plot combined PDFs
+# | fig-cap: p(x) fixed
+# | label: Plot combined PDFs correctly
 x_axis = np.linspace(-3, 3, 100)
 # Plot PDFs
-for params in PDF_list:
-    pdf_norm = stats.norm.pdf(x_axis, params[0], params[1])
-    plt.plot(x_axis, pdf_norm, label=f"N(mu = {params[0]}, sigma = {params[1]})")
+y_axis = [pdf_combined(x, PDF_list, weights) for x in x_axis]
+plt.plot(x_axis, y_axis)
 plt.ylabel("Density")
-plt.legend()
 plt.show()
 ```
 
