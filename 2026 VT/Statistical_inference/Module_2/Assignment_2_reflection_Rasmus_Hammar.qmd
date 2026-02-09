@@ -1,0 +1,40 @@
+---
+title: "Assignemnt 2 - reflections"
+subtitle: "Statistical inference"
+author: "Rasmus Hammar"
+format: typst
+---
+
+## Reflections
+
+a)
+
+I feel like I was missing how to actually calculate the p-value for this method.
+
+b)
+
+Yes.
+
+c)
+
+Yes.
+
+d)
+
+Bootstrap confidence interval is just a "we did this x-many times and this is how often we say these results" type of analysis. It doesn't provide a "proper" statistically derived probability which would require a much larger original sample.
+
+e)
+
+It was interesting getting to do more excercises for the resampling and calculate the p-value.
+
+f)
+
+It was fine.
+
+g)
+
+It was good.
+
+h)
+
+Spent more time on this but think it's still less than 20 hours.
