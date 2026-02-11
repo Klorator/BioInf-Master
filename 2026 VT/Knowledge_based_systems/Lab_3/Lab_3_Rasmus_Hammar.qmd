@@ -7,15 +7,7 @@ format: typst
 
 ## Tasks: Discretization
 
-A = (U,A ∪ {d})
-
-```{r}
-info_TA <- c(
-  -(4 / 9) * log2(4 / 9) - (5 / 9) * log2(5 / 9)
-)
-```
-
-Info([4,5]) = `r info_TA` bits.
+### A = (U,A ∪ {d})
 
 Table 1. Decision system A discretized using equal frequency with three levels.
 
@@ -49,9 +41,9 @@ Table 2. Decision system A discretized using naive method.
 
 POS~feature_1~({d}) = {{x~1~, x~6~, x~7~, x~9~}, {x~8~}, {x~2~}, {x~3~, x~4~, x~5~}} $=> \gamma = \frac{9}{9} = 1$
 
-Comparing $\gamma = \frac{6}{9}$ and $\gamma = \frac{9}{9} = 1$, the naive method would be better, but the equal frequency method is probably good enough and more generalizable.
+Comparing $\gamma = \frac{6}{9}$ and $\gamma = \frac{9}{9} = 1$, the naive method would be better, but the equal frequency method is probably good enough and more generalizable, and is therefore the better option.
 
-B = (U,B ∪ {d})
+### B = (U,B ∪ {d})
 
 Table 3. Decision system A discretized using equal frequency with three levels.
 
@@ -92,12 +84,18 @@ Comparing $\gamma = 0$ and $\gamma = 1$, the naive method would be better. Equal
 
 ## Tasks: R.ROSETTA
 
+### 1
+
 ```{r}
 rlang::is_installed("R.ROSETTA")
 ```
 
+### 2
+
 ```{r}
 library(R.ROSETTA)
+autcon <- autcon
+str(autcon)
 ```
 
 a)
@@ -105,3 +103,279 @@ n features = 35
 
 b)
 n objects per class = 146
+
+c)
+I suppose? Hard to say.
+
+### 3
+
+```{r}
+autconJohnson <- rosetta(autcon, roc = T)
+decision_table <- autconJohnson$main
+quality_stats <- autconJohnson$quality
+```
+
+### 4
+
+a)
+
+Cross-validation is the method of splitting a dataset into roughly equal size subsets and reserving one for testing while training on the rest.
+
+Default cross-validations in R.ROSETTA::rosetta is 10.
+
+b)
+
+Default reduction method is Johnson.
+
+The Johnson reduction method is a heuristic method for finding reducts.
+
+c)
+
+Default discretization method is equal frequency.
+
+Equal frequency splits the (ordered) dataset into k-subsets with equal number of objects.
+
+d)
+
+Default number of discretization levels used is 3.
+
+e)
+
+Mean accuracy of the model is `{r} round(quality_stats$accuracyMean, 3)`.
+
+f)
+
+To statistically evaluate the model, the accuracy is compared to that of random guessing.
+
+g)
+
+There are a total of `{r} nrow(decision_table)` rules in the model for decisions "control" and "autism".
+
+```{r}
+#| label: tbl-aut1
+#| tbl-cap: Top 12 (of 67 with p < 0.05) rules for decision "autism" with lowest p-value.
+top_12_rules_autism <- decision_table |>
+  dplyr::filter(decision == "autism", pValue < 0.05) |>
+  dplyr::arrange(pValue) |>
+  viewRules()
+top_12_rules_autism |>
+  head(12) |>
+  knitr::kable()
+```
+
+h)
+
+Accuracy is how often the rule is correct out of the objects is is applied to.
+
+Support is how many objects the rule is applied to.
+
+Cuts are the conditions for where to split a feature to differentiate between decisions.
+
+i)
+
+Length of rules range from 1 to 2.
+
+The quality of rules is pretty good. They depend on few features and have high accuracy.
+
+Rules are structured as such that "IF [gene](value-cut comparison) THEN [decision]", where the (value-cut comparison) is one of `1 => value < cut_1`, `2 => cut_1 < value > cut_2`, or `3 => value > cut_2`. Interpreting the rule is done by comparing the value for the gene against the cut.
+
+```{r}
+#| label: tbl-aut2
+#| tbl-cap: Same as @tbl-aut1 for some reason. (Are the instructions incorrect?)
+top_12_rules_autism |>
+  head(12) |>
+  knitr::kable()
+```
+
+```{r}
+#| tbl-cap: Cuts for features as seen in @tbl-aut1
+#| label: tbl-aut3
+top_12_rules_autism_cuts <- decision_table |>
+  dplyr::filter(decision == "autism", pValue < 0.05) |>
+  dplyr::arrange(pValue) |>
+  dplyr::select(c(
+    features,
+    levels,
+    tidyselect::starts_with("cut"),
+    decision
+  )) |>
+  dplyr::select(-cuts)
+top_12_rules_autism_cuts |>
+  head(12) |>
+  knitr::kable()
+```
+
+j)
+
+Class "control" had one more significant rule than "autism", with 68 vs 67 out of 135 rules with p < 0.05.
+
+The fraction of significant rules are:
+
+* control: $\frac{68}{135} \approx 0.504$
+* autism: $\frac{67}{135} \approx 0.496$
+
+```{r}
+#| tbl-cap: Top 12 rules (of 68 with p < 0.05) for decision "control" with lowest p-value.
+#| label: tbl-control
+top_12_rules_control <- decision_table |>
+  dplyr::filter(decision == "control", pValue < 0.05) |>
+  dplyr::arrange(pValue) |>
+  viewRules()
+top_12_rules_control |>
+  head(12) |>
+  knitr::kable()
+```
+
+### 5
+
+```{r}
+#| fig-cap: ROC for model.
+#| label: fig-roc
+plotMeanROC(autconJohnson)
+```
+
+a)
+Mean AUC is `{r} round(quality_stats$ROC.AUC.MEAN, 3)`.
+
+b)
+
+x-axis shows the false positive rate.
+
+y-axis shows the true positive rate.
+
+c)
+
+The area under the curve (AUC) measures how good the model is at differentiating between decision classes, with AUC = 1 being a perfect consistent system and AUC = 0.5 meaning random guessing.
+
+d)
+
+Because it's robust to skewed data, it becomes less sensitive to minority/rare classes.
+
+e)
+
+Best threshold depends on if it's better to get more false positives but catch all true positives (disease tests where further testing may be done to be sure), or if it's better to get less false positives but miss some true positives (test is very expensive or invasive, but a false negative is no big deal).
+
+### 6
+
+a)
+
+```{r}
+rules_features <- getFeatures(decision_table)
+```
+
+b)
+
+Intersecting genes.
+
+```{r}
+features_intersect <- intersect(
+  rules_features$features$control,
+  rules_features$features$autism
+)
+print(features_intersect)
+```
+
+c)
+
+Unique genes for control.
+
+```{r}
+print(unique(rules_features$features$control))
+```
+
+Unique genes for autism.
+
+```{r}
+print(unique(rules_features$features$autism))
+```
+
+### 7
+
+a)
+
+```{r}
+autconJohnson_recalculated <- recalculateRules(autcon, decision_table)
+```
+
+b)
+
+Column `supportSetRHS` contains the objects that the rule lead to the right decision for.
+
+c)
+
+The heatmap shows the most significant rule for decision "control", which involves genes MAP7 and NPR2. Color gradient inside the cells indicate normalized values and the left side legend bar groups the objects by if the rule supports them or not. 
+
+```{r}
+#| fig-cap: Recalculated model "most significant" rule for decision = control (genes MAP7 & NPR2).
+#| label: fig-heat
+decision_recalc_control <- autconJohnson_recalculated |>
+  dplyr::filter(decision == "control")
+plotRule(autcon, decision_recalc_control)
+```
+
+c)
+
+Objects supporting the rule have less variation compared to the rest of the objects.
+
+```{r}
+#| fig-cap: Same rule as for @fig-heat.
+#| label: fig-box
+plotRule(
+  autcon,
+  decision_recalc_control,
+  type = "box",
+  label = c("high", "medium")
+)
+```
+
+### 8
+
+a)
+Yes.
+
+b)
+
+```{r}
+rules_recalc_nonSignif <- decision_recalc_control |>
+  dplyr::filter(pValue > 0.05)
+```
+
+c)
+
+```{r}
+#| fig-cap: Non-significant rules (p > 0.05) where dark gray = 1 meaning the object supports the rule and light gray = 0 meaning no support.
+#| label: fig-heat_pruned
+clusterRules(
+  autcon,
+  rules_recalc_nonSignif
+)
+```
+
+d)
+
+Described the heatmap annotation in the figure text.
+
+e)
+
+There is no pattern in @fig-heat_pruned, which is expected since the remaining rules are non-significant.
+
+```{r}
+#| fig-cap: A more interesting case where non-significant (p > 0.05) rules were pruned (unlike in the lab instructions).
+#| label: fig-heat_signif
+rules_recalc_signif <- decision_recalc_control |>
+  dplyr::filter(pValue < 0.05)
+clusterRules(
+  autcon,
+  rules_recalc_signif
+)
+```
+
+In @fig-heat_signif, there are three clear clusters with one consisting of autism objects with a lower number of objects supporting the rules.
+
+f)
+
+More control objects seem to have more support from the rules compared to autism.
+
+g)
+
+Rules are more effective in classifying control objects than autism objects.

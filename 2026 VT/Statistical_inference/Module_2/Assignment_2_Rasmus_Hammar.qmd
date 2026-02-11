@@ -199,7 +199,7 @@ plt.show()
 ```{python}
 wells = 96
 values = np.asarray(["Red", "White"])
-counts = np.asarray([86, 10])
+counts = np.asarray([89, 7])
 urn_A4 = np.repeat(values, counts)
 ```
 
@@ -229,21 +229,21 @@ guessing = []
 for i in range(1000):
     guess = np.random.choice(urn_B1_H0, size=n, p=None, replace=True)
     guessing.append(sum(guess))
-guessing_ci = np.percentile(guessing, [2.5, 97.5])
-guessing_pvalue = len([g for g in guessing if g >= 14]) / len(guessing)
+# guessing_ci = np.percentile(guessing, [2.5, 97.5])
+guessing_pvalue = len([g for g in guessing if g <= 7]) / len(guessing)
 ```
 
 ```{python}
 # | fig-cap: Distribution of number of errors.
 plt.hist(guessing, bins=20, edgecolor="black")
-plt.vlines(14, ymin=0, ymax=150, colors="red", linestyles="dashed")
-plt.text(14.5, 120, "p = {:.3f}".format(guessing_pvalue), color="black")
-plt.xlabel("Number of correct guesses")
+plt.vlines(7, ymin=0, ymax=150, colors="red", linestyles="dashed")
+plt.text(4.5, 120, "p = {:.3f}".format(guessing_pvalue), color="black")
+plt.xlabel("Number of errors by guessing")
 plt.ylabel("Count")
 plt.show()
 ```
 
-With p = {guessing_pvalue:.3f} I would reject the null hypothesis, but most likely consider the model subpar.
+With `{python} "p = {:.3f}".format(guessing_pvalue)` I would reject the null hypothesis, but most likely consider the model subpar.
 
 ### B:2
 
@@ -262,9 +262,9 @@ n = 1200
 simulations = []
 for i in range(1000):
     sim = np.random.choice(urn_B2_H0, size=n, p=None, replace=True)
-    simulations.append(sum(sim)) # n positive test
+    simulations.append(sum(sim) / n)  # fraction positive test
 simulations_ci = np.percentile(simulations, [2.5, 97.5])
-simulations_pvalue = (len([s for s in simulations if s <= 900])) / len(simulations)
+simulations_pvalue = (len([s for s in simulations if s <= 0.75])) / len(simulations)
 ```
 
 Based on the p-value being much smaller than any conventional threshold, I would reject the null hypothesis. The percentage of individuals in the population with antibodies for Epstein-Barr virus is reasonably lower than 88 % (@fig-b2). 
@@ -278,10 +278,10 @@ else:
     p_val = "p = {:.3f}".format(simulations_pvalue)
 
 plt.hist(simulations, bins=25, edgecolor="black")
-plt.vlines(simulations_ci[0], ymin=0, ymax=100, colors="blue")
-plt.vlines(simulations_ci[1], ymin=0, ymax=100, colors="blue")
-plt.vlines(900, ymin=0, ymax=100, colors="red", linestyles="dashed")
-plt.text(910, 90, p_val, color="black")
+plt.vlines(simulations_ci[0], ymin=0, ymax=100, colors="blue", linestyles="dashed")
+plt.vlines(simulations_ci[1], ymin=0, ymax=100, colors="blue", linestyles="dashed")
+plt.vlines(0.75, ymin=0, ymax=100, colors="red", linestyles="dashed")
+plt.text(0.76, 90, p_val, color="black")
 plt.xlabel("Positive tests per 1200 individuals")
 plt.ylabel("Count simulations")
 plt.show()
@@ -297,9 +297,9 @@ n = 12
 simulations = []
 for i in range(1000):
     sim = np.random.choice(urn_B2_H0, size=n, p=None, replace=True)
-    simulations.append(sum(sim))  # n positive test
+    simulations.append(sum(sim) / n)  # n positive test
 simulations_ci = np.percentile(simulations, [2.5, 97.5])
-simulations_pvalue = (len([s for s in simulations if s <= 900])) / len(simulations)
+simulations_pvalue = (len([s for s in simulations if s <= 0.75])) / len(simulations)
 ```
 
 However, with a smaller sample size, n = 12, the null hypothesis can not be rejected (@fig-b2.2). 
@@ -312,11 +312,11 @@ if simulations_pvalue < (1 / n):
 else:
     p_val = "p = {:.3f}".format(simulations_pvalue)
 
-plt.hist(simulations, bins=25, edgecolor="black")
+plt.hist(simulations, bins=10, edgecolor="black")
 plt.vlines(simulations_ci[0], ymin=0, ymax=300, colors="blue")
 plt.vlines(simulations_ci[1], ymin=0, ymax=300, colors="blue")
-plt.vlines(9, ymin=0, ymax=300, colors="red", linestyles="dashed")
-plt.text(9.15, 300, p_val, color="black")
+plt.vlines(0.75, ymin=0, ymax=300, colors="red", linestyles="dashed")
+plt.text(0.76, 300, p_val, color="black")
 plt.xlabel("Positive tests per 1200 individuals")
 plt.ylabel("Count simulations")
 plt.show()
@@ -346,7 +346,9 @@ for i in range(10000):
     men_star = np.random.choice(urn_B3_H0, size=len(men), p=None, replace=True)
     B_mean_diff.append(np.mean(women_star) - np.mean(men_star))
 B_mean_diff_ci = np.percentile(B_mean_diff, [2.5, 97.5])
-B_mean_diff_pvalue = np.mean(np.abs(B_mean_diff) >= np.abs(H1_diff))
+B_mean_diff_pvalue = len([d for d in B_mean_diff if abs(d) >= abs(H1_diff)]) / len(
+    B_mean_diff
+)
 ```
 
 The observed mean is outside the confidence interval, and the p-value is less than alpha = 0.05 (@fig-b3). I would reject the null hypothesis.
@@ -357,8 +359,8 @@ Here we should definetly use a two-tailed test because we don't know if the horm
 # | label: fig-b3
 # | fig-cap: Distribution of mean differences in new hormone levels between men and women.
 plt.hist(B_mean_diff, bins=30, edgecolor="black")
-plt.vlines(B_mean_diff_ci[0], ymin=0, ymax=800, colors="blue")
-plt.vlines(B_mean_diff_ci[1], ymin=0, ymax=800, colors="blue")
+plt.vlines(B_mean_diff_ci[0], ymin=0, ymax=800, colors="blue", linestyles="dashed")
+plt.vlines(B_mean_diff_ci[1], ymin=0, ymax=800, colors="blue", linestyles="dashed")
 plt.vlines(H1_diff, ymin=0, ymax=800, colors="red", linestyles="dashed")
 plt.text(-25, 700, "p = {:.3f}".format(B_mean_diff_pvalue), color="black")
 plt.xlabel("Mean difference in hormone levels")
@@ -376,7 +378,14 @@ B = [14.0, 8.8, 11.2, 14.2, 11.8, 6.4, 9.8, 11.3, 9.3, 13.6]
 i)
 
 ```{python}
-d_mean_IQR = np.mean(A) - np.mean(B)
+def iqr(data):
+    q1 = np.percentile(data, 25)
+    q3 = np.percentile(data, 75)
+    return q3 - q1
+
+
+d_mean_IQR = iqr(A) - iqr(B)
+print("Difference in mean IQR between species A and B: {:.3f}".format(d_mean_IQR))
 ```
 
 ii)
@@ -396,9 +405,9 @@ B_mean_diff = []
 for i in range(10000):
     A_star = np.random.choice(urn_B4_H0, size=len(A), p=None, replace=True)
     B_star = np.random.choice(urn_B4_H0, size=len(B), p=None, replace=True)
-    B_mean_diff.append(np.mean(A_star) - np.mean(B_star))
+    B_mean_diff.append(iqr(A_star) - iqr(B_star))
 B_mean_diff_ci = np.percentile(B_mean_diff, [2.5, 97.5])
-B_mean_diff_pvalue = np.mean(np.abs(B_mean_diff) >= abs(d_mean_IQR))
+B_mean_diff_pvalue = len([d for d in B_mean_diff if abs(d) >= abs(d_mean_IQR)]) / len(B_mean_diff)
 ```
 
 iv)
@@ -410,7 +419,7 @@ plt.hist(B_mean_diff, bins=30, edgecolor="black")
 plt.vlines(B_mean_diff_ci[0], ymin=0, ymax=800, colors="blue")
 plt.vlines(B_mean_diff_ci[1], ymin=0, ymax=800, colors="blue")
 plt.vlines(d_mean_IQR, ymin=0, ymax=800, colors="red", linestyles="dashed")
-plt.text(-2, 1000, "p = {:.3f}".format(B_mean_diff_pvalue), color="black")
+plt.text(2, 900, "p = {:.3f}".format(B_mean_diff_pvalue), color="black")
 plt.xlabel("Difference in mean IQR")
 plt.ylabel("Count simulations")
 plt.show()

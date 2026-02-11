@@ -1,0 +1,137 @@
+---
+title: "Lab 4"
+subtitle: "Knowledge Based Systems"
+author: "Rasmus Hammar"
+format: typst
+---
+
+
+```{r}
+#| error: false
+#| warning: false
+#| output: false
+library(csVisuNet)
+```
+
+## Task 1
+
+1)
+
+```{r}
+autcon <- readRDS("autism_control.RDS")
+str(autcon)
+```
+
+2)
+
+```{r}
+ros <- rosetta(autcon)
+```
+
+With 193 rules in total, the quality looks fine.
+
+3)
+
+```{r}
+#| eval: false
+library(RCy3)
+cytoscapePing()
+vis <- visunetcyto(ros$main)
+```
+
+```{r}
+vis <- readRDS("vis.RDS")
+```
+
+Minimum meanAccuracy = 0.88
+
+Minimum meanSupp = 13.0
+
+Minimum meanDecisionCoverage = 0.245
+
+Difference between the subnetworks is mainly that control has many more nodes and main/biggest nodes are different genes.
+
+Strongest connected nodes:
+
+* Autism: PSMG4
+* Control: MAP7
+
+RHPN1 seems to be a cancer gene and there is no obvious connection to autism.
+
+`vis` is a list with information on the networks, such as nodes and edges.
+
+![Autism subnetwork](autism.png){#fig-autism}
+
+![Control subnetwork](control.png){#fig-control}
+
+4)
+
+```{r}
+SFARI <- readRDS("SFARI_Genes.RDS")
+vis_genes <- vis$all$nodes$label
+
+overlapped_genes <- SFARI[which(SFARI$gene.symbol %in% vis_genes), ]
+overlapped_genes[, c(2, 1, 3:4)] |>
+  knitr::kable(row.names = FALSE)
+overlapped_genes[, c(2, 5:8)] |>
+  knitr::kable(row.names = FALSE)
+```
+
+5)
+
+a)
+
+```{r}
+#| warning: false
+#| output: false
+library(org.Hs.eg.db)
+library(clusterProfiler)
+```
+
+b)
+
+```{r}
+gene_entrez <- bitr(
+  unique(as.character(vis_genes)),
+  fromType = "SYMBOL",
+  toType = "ENTREZID",
+  OrgDb = org.Hs.eg.db
+)
+```
+
+c)
+
+```{r}
+genes_GO <- groupGO(
+  gene = unique(gene_entrez$ENTREZID),
+  OrgDb = org.Hs.eg.db,
+  ont = "MF",
+  level = 5,
+  readable = T
+)
+```
+
+```{r}
+most_freq <- as.data.frame(genes_GO) |>
+  dplyr::filter(Count >= max(Count)) |>
+  dplyr::select(-ID) |>
+  t()
+rownames(most_freq) <- c("Description", "Count", "GeneRatio", "geneID")
+knitr::kable(most_freq)
+```
+
+d)
+
+```{r}
+#| fig-cap: GO entries with count > 0.
+#| label: fig-go_bar
+x1 <- as.data.frame(genes_GO)[
+  which(as.data.frame(genes_GO)$Count > 1),
+  c('ID', 'Count')
+]
+x <- as.numeric(x1[, 2])
+names(x) <- x1$ID
+barplot(x, col = rainbow(20), las = 2)
+```
+
+Cation binding (GO:0043169) is an integral part of how cells, but specifically neurons, work. If this process is being regulated differently that may contribute to phenotypic differences observed as autism. 
