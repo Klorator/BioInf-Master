@@ -1,0 +1,17 @@
+---
+title: "Assignment 3"
+subtitle: "Statistical inference"
+author: "Rasmus Hammar"
+format: typst
+jupyter: 
+    kernel: py311
+---
+
+## Part A
+
+```{python}
+import pycaret
+from pycaret.regression import *
+from pycaret.datasets import get_data
+```
+

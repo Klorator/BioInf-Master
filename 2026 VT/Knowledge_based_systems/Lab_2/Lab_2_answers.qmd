@@ -30,10 +30,14 @@ Accuracy of approximation = $\frac{0}{5} = 0$
 
 c)
 Rough membership functions for _Walk = Yes_ by _IND{Age}_:
+
 {Smith, Jones, Fields} = $\frac{2}{3}$
+
 {Parker, Hanson} = $\frac{1}{2}$
 
-Good model? No.
+{Moore, Starr} = $\frac{0}{2}$
+
+It is not a very good model as there are no discernable groups for _Walk = Yes_ and the accuracy is not very good.
 
 ### 3. Discernability 2
 
@@ -73,7 +77,7 @@ Boolean discenability function
 = (LEMS)(Sex)
 
 
-{Smith} is discernable from {Parker, Hanson}, but the latter two are never discernable.
+{Smith} is discernable from {Parker, Hanson}, but the latter two are inconsistent.
 
 ### 5. Rule-based classification
 
@@ -85,7 +89,7 @@ a)
 * {Parker, Hanson} = {Yes, No}
 * {Moore, Starr} = No
 
-The table is inconsistent due to {Parker, Moore}.
+The table is inconsistent due to {Parker, Hanson}.
 
 `#colbreak()`{=typst}
 b)
@@ -191,9 +195,4 @@ This classifier is reasonably strong and could probably be used.
 
 i)
 
-Threshold values:
-
-* > 0.8 is good
-* > 0.9 very good
-* Close to diagonal is bad
-* If very low, flip how we categorize outcomes
+Threshold values depends on what you are testing. If it's important to catch all positive tests and then perform extra tests if needed (e.g. cancer) then you want a higher y-axis value (sensitivity). If the consequences of missing a positive test are inconsequential (e.g. blood glucose) then you may accept lower sensitivity for a cheaper test.
