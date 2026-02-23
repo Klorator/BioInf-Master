@@ -1,0 +1,25 @@
+---
+title: "Independent project"
+subtitle: "Molecular evolution"
+author: "Rasmus Hammar"
+format: typst
+---
+
+Hammar, Rasmus TERF2 ENSSSAG00000058544 Atlantic salmon (Salmo salar) Ensembl
+
+## Introduction
+
+
+## Method
+
+
+## Results
+
+
+## Discussion
+
+
+## References
+
+
+## Appendix

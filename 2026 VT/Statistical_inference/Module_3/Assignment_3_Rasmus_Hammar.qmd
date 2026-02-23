@@ -9,9 +9,279 @@ jupyter:
 
 ## Part A
 
+### Imports
+
 ```{python}
+#| label: Imports
 import pycaret
 from pycaret.regression import *
 from pycaret.datasets import get_data
+```
+
+### Data
+
+```{python}
+#| tbl-cap: Preview of insurance dataset.
+# | label: tbl-insurance_preview
+dataset_name = "insurance"  # Replace with your desired dataset.
+dataset = pycaret.datasets.get_data(dataset_name)
+# check the shape of data
+dataset.shape
+```
+
+
+```{python}
+#| label: Reserve prediction data
+data = dataset.sample(frac=0.9, random_state=786)
+data_unseen = dataset.drop(data.index)  # Get all non-selected samples
+data.reset_index(drop=True, inplace=True)  # Reset indices of training data
+data_unseen.reset_index(drop=True, inplace=True)  # Reset indices in test
+print("Data for Modeling: " + str(data.shape))
+print("Unseen Data For Predictions: " + str(data_unseen.shape))
+```
+
+### PyCaret environment setup
+
+
+```{python}
+#| fig-cap: PyCaret setup.
+# | label: tbl-setup
+# pycaret.regression.setup()
+s = setup(data=data, target="charges", train_size=0.7, session_id=123)
+print(s)
+```
+
+### Models
+
+#### Model comparison
+
+```{python}
+# | tbl-cap: Model comparison for families ridge regression and k-nearest neighbour regression.
+# | label: tbl-model_comparison
+# 'ridge’= ridge regression
+# 'knn' = k-nearest neighbour regression)
+model_comparison_RMSE = compare_models(sort="RMSE", include=["ridge", "knn"])
+print(model_comparison_RMSE)
+```
+
+#### Ridge regression
+
+```{python}
+#| fig-cap: Model creation for ridge regression.
+# | label: tbl-ridge_model
+ridge = create_model("ridge")  # alpha=1 is the default
+print(ridge)
+```
+
+#### K-neighbours regression
+
+```{python}
+#| tbl-cap: Model creation for k-nearest neghbour regression.
+# | label: tbl-k-nearest_model
+knn = create_model("knn")  # k=5 is the default used here
+print(knn)
+```
+
+### Tuning hyper-parameters
+
+```{python}
+# | eval: false
+# Example syntax for tuning.
+# define tuning grid
+ridge_grid = {"alpha": [0, 0.2, 0.4, 0.6, 0.8, 1, 2]}
+# tune model with custom grid and metric = MAE (default metric = R^2)
+tuned_ridge = tune_model(ridge, custom_grid=ridge_grid, optimize="MAE")
+```
+
+```{python}
+#| tbl-cap: Tuning ridge regression model.
+# | label: tbl-tuning_ridge
+tuned_ridge = tune_model(ridge)
+print(tuned_ridge)
+```
+
+
+```{python}
+#| tbl-cap: Tuning k-nearest neighbour model.
+# | label: tbl-tuning_k-nearest
+tuned_knn = tune_model(knn)
+print(tuned_knn)
+```
+
+### Predict using test
+
+
+```{python}
+#| tbl-cap: Predict testing ridge regression model.
+# | label: tbl-predict on ridge
+predict_model(tuned_ridge)
+```
+
+
+```{python}
+# | label: tbl-predict on k-nearest
+# | tbl-cap: Predict testing k-nearest neighbour regression model.
+predict_model(tuned_knn)
+```
+
+The ridge regression model has a lower RMSE than the k-nearest neighbour regression model. We proceed with the ridge regression model.
+
+### Plot models
+
+```{python}
+# | fig-cap: Ridge regression error plot
+# | label: fig-ridge_error
+plot_model(tuned_ridge, plot="error")
+```
+
+
+```{python}
+# | fig-cap: Ridge regression important features
+# | label: fig-ridge_feature
+plot_model(tuned_ridge, plot="feature")
+```
+
+### Final model
+
+```{python}
+#| label: Final model
+final_ridge = finalize_model(tuned_ridge)
+```
+
+### Predict on unseen data
+
+```{python}
+#| tbl-cap: Predict on unseen data using final ridge regression model.
+# | label: tbl-predict_unseen
+unseen_predictions = predict_model(final_ridge, data=data_unseen)
+unseen_predictions.head()
+```
+
+### Save/load model
+
+```{python}
+#| label: Save model
+save_model(final_ridge, "Final Ridge Regression Model")
+```
+
+
+```{python}
+# | label: Load model
+# | eval: false
+saved_final_ridge = load_model("Final Ridge Regression Model")
+new_prediction = predict_model(saved_final_ridge, data=data_new)
+new_prediction.head()
+```
+
+### Questions
+
+1. Since the B-fold cross-validation process is conceptually similar to bootstraping, the same method of averaging predictions can be used to estimate the "true" value.
+
+2. The hyper-parameter for ridge regression (alpha) controls how large the coefficients get, i.e. its purpose is to keep them from getting too large. Alpha is a part of a term that penalizes large coefficients where they are multiplied by alpha, leading to alpha = 0 removing the penalty and larger alpha meaning larger penalty.
+
+3. 
+ a) Hyper-parameter K controls how many of the closest points to include in the averaging. Larger K leads to a smoother curve but loss of fluctuation. 
+ b) If K = N data points then every time you predict a value it's the average of the entire dataset which is constant.
+
+4. 
+ a) The tuned ridge regression model has a lower RMSE compared to the tuned k-nearest neighbour regression model when testing using `predict_model`.
+ b) The mean RMSE for both models is slightly higher when using `predict_model` compared to tuning, which is expected since the model is now being applied to a larger dataset.
+
+5. B-folds splits the dataset into B parts and uses B-1 for training and repeats this process B times, making it so a larger B leads to larger dataset size with more overlap between training sets. More iterations provides a better estimate of the true value but is more computationally heavy. The most extreme case being B = N where only one row is used for testing.
+Reducing B to B = 2 would reduce the computational burden but also lead to lower accuracy due to fewer iterations and less overlap between training sets. 
+
+6. 
+ a) `compare_models` using default hyper-paramters may indicate that a certain model family is better than another, when after tuning the hyper-parameters the opposite may be true because the defaults are bad for the particular dataset in question.
+ b) Since `compare_models` is potentially unreliable, it is safer to create and tune models for all model families and then compare the tuned models.
+
+7. 
+ a) Finalizing the model by retraining it on the full dataset leaves no data for testing/evaluating/tuning hyper-parameters, which may give very different results when applied to a larger dataset.
+ b) The final model still needs to be tested to verify how good it is, which can be done by applying it to new or reserved data not used in building the model.
+
+## Part B
+
+### Data
+
+```{python}
+#| label: data part B
+dataset = get_data("energy")
+```
+
+
+```{python}
+# | label: Reserve unseen data
+data=dataset.sample(frac=0.9,random_state=42)
+data_unseen=dataset.drop(data.index) # Get all non-selected samples
+data.reset_index(drop=True,inplace=True) # Reset indices of training data
+data_unseen.reset_index(drop=True,inplace=True) # Reset indices in test
+print("Data for Modeling: "+str(data.shape))
+print("Unseen Data For Predictions: "+str(data_unseen.shape))
+```
+
+### PyCaret environment setup
+
+```{python}
+#| label: pycaret env setup
+s = setup(data=data, target="Heating Load", train_size=0.7, session_id=546)
+print(s)
+```
+
+### Create and tune models
+
+#### Model comparison
+
+```{python}
+#| label: compare models
+model_families = ["ridge", "knn"]
+model_comparison = compare_models(include=model_families)
+print(model_comparison)
+```
+
+Ridge regression is the better model based on RMSE or R^2, but not by much. They are practically equivalent.
+
+#### Model creation
+```{python}
+#| label: create ridge
+model_ridge = create_model("ridge")
+```
+
+```{python}
+#| label: create knn
+model_knn = create_model("knn")
+```
+
+#### Model tuning
+
+```{python}
+# | label: tune ridge
+ridge_grid = {"alpha": [0, 0.1, 0.3, 0.5, 0.7, 1, 2, 4, 8]}
+tuned_ridge = tune_model(model_ridge, custom_grid=ridge_grid, optimize="RMSE")
+print(tuned_ridge)
+```
+
+```{python}
+# | label: tune knn
+knn_grid = {"n_neighbors": [3, 5, 7, 9, 11]}
+tuned_knn = tune_model(model_knn, custom_grid=knn_grid, optimize="RMSE")
+print(tuned_knn)
+```
+
+Mean RMSE for tuned ridge (alpha = 0.1) is 1.7915 vs 1.7633 for tuned k-nearest (K = 3), indicating that k-nearest neighbour regression is a better model after tuning. R^2 is the same for both models (R^2 $\approx$ 0.97). Both tuned models perform better than with default hyper-parameters, and the difference between tuned models is minor.
+
+Final model selected is the tuned Ridge regression model.
+
+```{python}
+# | label: final model 2
+final_ridge = tuned_ridge
+```
+
+### Conclusion
+
+The two most important features for predicting the heating load are glazing area and relative compactness (@fig-ridge_2_feature), which is reasonable considering larger exposed surface area to the surrounding environment increases heat transfer and glass is a poor insulator compared to walls. Third most important feature is overall height, possibly connected to higher structures being more exposed to the wind stripping away heat.
+
+```{python}
+# | label: fig-ridge_2_feature
+#| fig-cap: Feature importance for the final ridge regression model.
+plot_model(final_ridge, plot="feature")
 ```
 

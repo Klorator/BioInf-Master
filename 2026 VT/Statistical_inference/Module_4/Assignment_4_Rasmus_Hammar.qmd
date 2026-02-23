@@ -1,0 +1,19 @@
+---
+title: "Assignment 4"
+subtitle: "Statistical inference"
+author: "Rasmus Hammar"
+format: typst
+jupyter: 
+    kernel: py311
+---
+
+## Part A
+
+
+
+
+
+
+
+
+## Part B

@@ -1,0 +1,3 @@
+Model A = model = 0, fix_omega = 1, omega = 1
+Model B = model = 0, fix_omega = 0, omega = 1
+Model C = model = 1, fix_omega = 0, omega = 1
