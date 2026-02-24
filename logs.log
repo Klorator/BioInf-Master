@@ -1,0 +1,108 @@
+2026-02-23 10:47:57,587:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-02-23 10:47:57,587:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-02-23 10:47:57,587:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-02-23 10:47:57,587:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-02-23 14:31:57,810:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:114: FutureWarning:
+
+Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+
+
+2026-02-23 14:31:57,812:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:122: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 14:31:57,813:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:135: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 14:31:57,824:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:146: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 14:41:34,957:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:114: FutureWarning:
+
+Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+
+
+2026-02-23 14:41:34,958:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:122: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 14:41:34,958:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:135: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 14:41:34,968:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:146: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 14:44:46,242:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:114: FutureWarning:
+
+Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+
+
+2026-02-23 14:44:46,242:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:122: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 14:44:46,243:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:135: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 14:44:46,256:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:146: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 15:42:15,571:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:114: FutureWarning:
+
+Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+
+
+2026-02-23 15:42:15,572:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:122: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 15:42:15,572:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:135: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 15:42:15,605:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:146: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 21:54:41,535:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:114: FutureWarning:
+
+Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+
+
+2026-02-23 21:54:41,535:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:122: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 21:54:41,543:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:135: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+
+2026-02-23 21:54:41,573:WARNING:C:\Programming\Python\Python3.11.9\Lib\site-packages\dexpy\optimal.py:146: FutureWarning:
+
+Series.__setitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To set a value by position, use `ser.iloc[pos] = value`
+
+

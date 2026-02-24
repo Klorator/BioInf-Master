@@ -9,11 +9,415 @@ jupyter:
 
 ## Part A
 
+### Imports
+```{python}
+#| label: Imports
+import pycaret
+from pycaret.regression import *
+from pycaret.datasets import get_data
+import dexpy.factorial
+import dexpy.optimal
+from dexpy.model import ModelOrder
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+### A1
+
+i) 2^(5-2) = 8 experiments.
+
+```{python}
+# | label: tab-coffee_design_2
+# | tbl-cap: Design matrix for coffee testing experiment with 2^(5-2) design.
+coffee_design = dexpy.factorial.build_factorial(5, 2 ** (5 - 2))
+coffee_design.columns = ["amount", "grind_size", "brew_time", "grind_type", "beans"]
+coffee_design
+```
+
+ii)
+
+```{python}
+# | label: tab-coffee_design_full
+# | tbl-cap: Design matrix for coffee testing experiment.
+coffee_design = dexpy.factorial.build_factorial(5, 2 ** (5 - 1))
+coffee_design.columns = ["amount", "grind_size", "brew_time", "grind_type", "beans"]
+coffee_design
+```
+
+```{python}
+center_points = [[0, 0, 0, -1, -1], [0, 0, 0, -1, 1], [0, 0, 0, 1, -1], [0, 0, 0, 1, 1]]
+center_points
+```
+
+```{python}
+#| label: tbl-coffee_design_centerpoints
+#| tbl-cap: Design matrix for coffee testing experiment with center points for vaiables that are factors with two levels.
+coffee_design = pd.concat(
+    [coffee_design, pd.DataFrame(center_points * 2, columns=coffee_design.columns)],
+    ignore_index=True,
+)
+coffee_design.index = np.arange(0, len(coffee_design))
+coffee_design
+```
+
+```{python}
+#| tbl-cap: Interpretable design for coffee testing experiment.
+# | label: tab-coffee_design_interpretable
+actual_lows = {
+    "amount": 2.5,
+    "grind_size": 8,
+    "brew_time": 3.5,
+    "grind_type": "burr",
+    "beans": "light",
+}
+actual_highs = {
+    "amount": 4,
+    "grind_size": 10,
+    "brew_time": 4.5,
+    "grind_type": "blade",
+    "beans": "dark",
+}
+actual_design = dexpy.design.coded_to_actual(coffee_design, actual_lows, actual_highs)
+actual_design
+```
 
 
+### A2
+
+```{python}
+coffee_design["taste_rating"] = [
+    4.4, 2.6, 2.4, 8.6, 1.6,
+    2.8, 7.2, 3.4, 6.8, 3.4,
+    3.8, 9.0, 5.2, 3.6, 8.2,
+    7.0, 5.4, 6.8, 3.6, 5.4,
+    4.8, 6.2, 4.4, 5.8
+]
+coffee_design
+```
+
+### A3
+
+```{python}
+coffee_design_as_np_array = (
+    coffee_design.to_numpy()
+)  # Convert from pandas to numpy array
+y_np_array = coffee_design_as_np_array[:, 5]
+y_np_array = y_np_array.reshape(-1, 1)  # Reshape to column 2D numpy array
+X_np_array = coffee_design_as_np_array[:, 0:5]  # Examples as rows
+
+# LEAST SQUARES CLOSED FORM SOLUTION w = inv(Z '*Z)*Z'*y
+# Extend X_np_array with one extra column for the intercept
+shapeX = X_np_array.shape
+nrows = shapeX[0]
+Z = np.c_[
+    np.ones((nrows, 1)), X_np_array
+]  # add x_0 = 1 to each instance(row) to include an intercept term w_0 in the model
+# Calculate w = inv(Z '*Z)*Z'*y using np.transpose() and np.matmul() and np.linalg.inv()
+Ztranspose = np.transpose(Z)
+ZtransposeZ = np.matmul(Ztranspose, Z)
+ZtransposeZ_inv = np.linalg.inv(ZtransposeZ)
+w_np_array = np.matmul(
+    ZtransposeZ_inv, np.matmul(Ztranspose, y_np_array)
+)  # column vector
+print(w_np_array)
+```
 
 
+### A4
 
+i) Brew time is indicated as the most important factor (1.2), followed by amount (0.875).
 
+ii) Using the coded values has effectively normalized the data so that they influence the results equally and are on the same scale. This makes the numbers directly comparable between variables.
+
+### A5
+
+```{python}
+Z2 = np.c_[
+    np.ones((nrows, 1)), X_np_array
+]  # add x_0 = 1 to each instance (row) to include an intercept term w_0 in the model
+Z2 = np.c_[Z2, X_np_array[:, 0] * X_np_array[:, 1]]  # amount * grind_size
+Z2 = np.c_[Z2, X_np_array[:, 0] * X_np_array[:, 2]]  # amount * brew_time
+Z2 = np.c_[Z2, X_np_array[:, 0] * X_np_array[:, 3]]  # amount * grind_type
+Z2 = np.c_[Z2, X_np_array[:, 0] * X_np_array[:, 4]]  # amount * beans
+Z2 = np.c_[Z2, X_np_array[:, 1] * X_np_array[:, 2]]  # grind_size * brew_time
+Z2 = np.c_[Z2, X_np_array[:, 1] * X_np_array[:, 3]]  # grind_size * grind_type
+Z2 = np.c_[Z2, X_np_array[:, 1] * X_np_array[:, 4]]  # grind_size * beans
+Z2 = np.c_[Z2, X_np_array[:, 2] * X_np_array[:, 3]]  # brew_time * grind_type
+Z2 = np.c_[Z2, X_np_array[:, 2] * X_np_array[:, 4]]  # brew_time * beans
+Z2 = np.c_[Z2, X_np_array[:, 3] * X_np_array[:, 4]]  # grind_type * beans
+# Calculate w= inv (Z ’*Z ’)*Z ’*y using np. transpose () and np. matmul () and np. linalg . inv ()
+Z2transpose = np.transpose(Z2)
+Z2transposeZ2 = np.matmul(Z2transpose, Z2)
+Z2transposeZ2_inv = np.linalg.inv(Z2transposeZ2)
+w_np_array2 = np.matmul(
+    Z2transposeZ2_inv, np.matmul(Z2transpose, y_np_array)
+)  # column vector
+print(w_np_array2)
+```
+
+i) Most influential interaction is amount * beans (-1.325), followed by brew time * grind type (0.75) and grind size * grind type (-0.725). Amount and brew time are both positive alone, but negative in their interaction.
+
+ [ 5.1       ] intercept
+ [ 0.875     ] amount
+ [-0.125     ] grind_size
+ [ 1.2       ] brew_time
+ [-0.13333333] grind_type
+ [ 0.45      ] beans
+ [ 0.25      ] amount * grind_size
+ [-0.075     ] amount * brew_time
+ [-0.175     ] amount * grind_type
+ [-1.325     ] amount * beans
+ [ 0.375     ] grind_size * brew_time
+ [-0.725     ] grind_size * grind_type
+ [ 0.375     ] grind_size * beans
+ [ 0.75      ] brew_time * grind_type
+ [ 0.15      ] brew_time * beans
+ [ 0.08333333] grind_type * beans
+
+ii) Including interactions makes it harder to interpret the effect of individual variables because they are now interdependent.
 
 ## Part B
+
+### B1
+
+i) 
+
+```{python}
+# D- optimal design of quadratic model
+no_of_factors = 2
+reaction_design = dexpy.optimal.build_optimal(
+    no_of_factors, run_count=6, order=ModelOrder.quadratic
+)
+```
+
+ii)
+
+```{python}
+# Print out of the design and conversion to real experimental values to use in the actual experiments to be performed
+column_names = ["time", "temp"]
+actual_lows = {"time": 40, "temp": 80}
+actual_highs = {"time": 50, "temp": 90}
+reaction_design.columns = column_names
+print(dexpy.design.coded_to_actual(reaction_design, actual_lows, actual_highs))
+```
+
+```{python}
+reaction_design_np_array = reaction_design.to_numpy()
+fig = plt.figure()
+ax = fig.add_subplot()
+
+# plotting the points
+plt.scatter(
+    reaction_design_np_array[:, 0],
+    reaction_design_np_array[:, 1],
+    color="green",
+    marker="o",
+)
+plt.xlabel("time")
+plt.ylabel("temp")
+ax.set_xticks([-1, 0, 1])
+ax.set_xticklabels(["40 min", "45 min", "50 min"])
+ax.set_yticks([-1, 0, 1])
+ax.set_yticklabels(["80C", "85C", "90C"])
+ax.grid()
+plt.title("Chemical Process Data")
+plt.show()
+```
+
+iii) 
+
+```{python}
+X_np_array = reaction_design_np_array
+
+# Add columns corresponding to a full quadratic model to the design matrix Z_np_array
+shapeX = X_np_array.shape
+nrows = shapeX[0]
+Z_np_array = np.c_[
+    np.ones((nrows, 1)), X_np_array
+]  # add x0 = 1 to each instance (row )
+Z_np_array = np.c_[Z_np_array, X_np_array[:, 0] * X_np_array[:, 0]]
+Z_np_array = np.c_[Z_np_array, X_np_array[:, 1] * X_np_array[:, 1]]
+Z_np_array = np.c_[Z_np_array, X_np_array[:, 0] * X_np_array[:, 1]]
+Z_np_array
+det_Z_np_array = np.linalg.det(np.matmul(np.transpose(Z_np_array), Z_np_array))
+det_Z_np_array
+print("|(Z’Z)| for optimal design :", det_Z_np_array)
+```
+
+iv)
+
+```{python}
+# D- optimal design of quadratic model
+no_of_factors = 2
+reaction_design = dexpy.optimal.build_optimal(
+    no_of_factors, run_count=10, order=ModelOrder.quadratic
+)
+
+# Print out of the design and conversion to real experimental values to use in the actual experiments to be performed
+column_names = ["time", "temp"]
+actual_lows = {"time": 40, "temp": 80}
+actual_highs = {"time": 50, "temp": 90}
+reaction_design.columns = column_names
+print(dexpy.design.coded_to_actual(reaction_design, actual_lows, actual_highs))
+
+reaction_design_np_array = reaction_design.to_numpy()
+fig = plt.figure()
+ax = fig.add_subplot()
+
+# plotting the points
+plt.scatter(
+    reaction_design_np_array[:, 0],
+    reaction_design_np_array[:, 1],
+    color="green",
+    marker="o",
+)
+plt.xlabel("time")
+plt.ylabel("temp")
+ax.set_xticks([-1, 0, 1])
+ax.set_xticklabels(["40 min", "45 min", "50 min"])
+ax.set_yticks([-1, 0, 1])
+ax.set_yticklabels(["80C", "85C", "90C"])
+ax.grid()
+plt.title("Chemical Process Data")
+plt.show()
+```
+
+
+
+```{python}
+X_np_array = reaction_design_np_array
+
+# Add columns corresponding to a full quadratic model to the design matrix Z_np_array
+shapeX = X_np_array.shape
+nrows = shapeX[0]
+Z_np_array = np.c_[
+    np.ones((nrows, 1)), X_np_array
+]  # add x0 = 1 to each instance (row )
+Z_np_array = np.c_[Z_np_array, X_np_array[:, 0] * X_np_array[:, 0]]
+Z_np_array = np.c_[Z_np_array, X_np_array[:, 1] * X_np_array[:, 1]]
+Z_np_array = np.c_[Z_np_array, X_np_array[:, 0] * X_np_array[:, 1]]
+Z_np_array
+det_Z_np_array = np.linalg.det(np.matmul(np.transpose(Z_np_array), Z_np_array))
+det_Z_np_array
+print("|(Z’Z)| for optimal design :", det_Z_np_array)
+```
+
+v) No experiments have the same combination of variable values.
+
+### B2
+
+```{python}
+X = [
+    [-1, -1],
+    [1, -1],
+    [-1, 1],
+    [1, 1],
+    [0, 0],
+    [0, 0],
+    [0, 0],
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+]
+log_y = np.log(
+    [13.65, 13.74, 15.48, 13.53, 17.38, 16.35, 16.41, 12.51, 15.17, 14.86, 11.85]
+)
+X = np.asarray(X)
+log_y = np.asarray(log_y).reshape(-1, 1)
+print(X)
+print(log_y)
+```
+
+
+```{python}
+A = np.c_[  # intercept
+    np.ones((X.shape[0], 1)), X
+]
+A = np.c_[A, X[:, 0] * X[:, 1]]  # interaction
+A = np.c_[A, X[:, 0] * X[:, 0]]  # x1^2
+A = np.c_[A, X[:, 1] * X[:, 1]]  # x2^2
+print(A)
+```
+
+```{python}
+AT = np.transpose(A)
+ATA = np.matmul(AT, A)
+ATA_inv = np.linalg.inv(ATA)
+w = np.matmul(ATA_inv, np.matmul(AT, log_y))
+print(w)
+```
+
+### B3
+
+1)
+
+Create a D-optimal design matrix.
+
+```{python}
+n_factors = 2
+n_experiments = 6
+paper_copter_design = dexpy.optimal.build_optimal(
+    n_factors, run_count=n_experiments, order=ModelOrder.quadratic
+)
+paper_copter_design.columns = ["x1","x2"]
+paper_copter_array = paper_copter_design.to_numpy()
+```
+
+2)
+
+Predict y values for training data using the previous model.
+
+```{python}
+y_obs = []
+for row in paper_copter_array:
+    noise = np.random.normal(0, 0.1)
+    y_obs.append(
+        w[0]  # intercept
+        + w[1] * row[0]  # x1
+        + w[2] * row[1]  # x2
+        + w[3] * row[0] * row[1]  # interaction x1*x2
+        + w[4] * row[0] ** 2  # x1^2
+        + w[5] * row[1] ** 2  # x2^2
+        + noise  # random noise
+    )
+for i in range(len(y_obs)):
+    print(f"For x1 = {paper_copter_array[i,0]} and x2 = {paper_copter_array[i,1]}: y_obs = {y_obs[i]}")
+```
+
+3)
+
+Perform OLS regression using the predicted training data.
+
+```{python}
+y_obs = np.asarray(y_obs).reshape(-1, 1)
+print(paper_copter_array)
+print(y_obs)
+```
+
+```{python}
+A = np.c_[  # intercept
+    np.ones((paper_copter_array.shape[0], 1)), paper_copter_array
+]
+A = np.c_[A, paper_copter_array[:, 0] * paper_copter_array[:, 1]]  # interaction
+A = np.c_[A, paper_copter_array[:, 0] ** 2]  # x1^2
+A = np.c_[A, paper_copter_array[:, 1] ** 2]  # x2^2
+print(A)
+```
+
+```{python}
+AT = np.transpose(A)
+ATA = np.matmul(AT, A)
+ATA_inv = np.linalg.inv(ATA)
+v = np.matmul(ATA_inv, np.matmul(AT, y_obs))
+```
+
+4)
+
+The resulting regression model is very similar to the "true" model used to generate the data, despite added noise.
+
+```{python}
+for i in range(len(v)):
+    print(f"w[{i}] = {w[i][0]:>10f} : v[{i}] = {v[i][0]:>10f}")
+```
