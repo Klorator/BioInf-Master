@@ -1,0 +1,119 @@
+---
+title: "Lab 5 - Monte Carlo Feature Selection"
+subtitle: "Knowledge-based Systems"
+author: "Rasmus Hammar"
+format: typst
+---
+
+## Library
+
+```{r}
+library(rmcfs)
+```
+
+## Data
+
+```{r}
+# load dataset
+alizadeh <- read.table("alizadeh.csv")
+```
+
+```{r}
+#| tbl-cap: Preview of alizadeh data.
+#| label: tab-data_preview
+n = 5
+alizadeh[1:n, c(1:n, dim(alizadeh)[2])] |>
+  knitr::kable()
+```
+
+The universe is all sets/rows in the dataframe.
+
+The attributes are all of the 'GENE' columns, and the decision attribute is the 'class' column.
+
+```{r}
+table(alizadeh$class) |>
+  as.data.frame() |>
+  `names<-`(c("class", "Frequency")) |>
+  knitr::kable()
+```
+
+## Monte Carlo Feature Selection
+
+
+```{r}
+result <- mcfs(
+  class ~ .,
+  alizadeh,
+  projections = 1500,
+  projectionSize = 0.1,
+  splits = 5,
+  splitSetSize = 500,
+  cutoffPermutations = 6,
+  threadsNumber = 6
+)
+```
+
+* projections = 1500 => number of random projections to be generated
+* projectionSize = 0.1 => size of the random projections, i.e. how many columns (10 %)
+* splits = 5 => number of splits, dividing rows into chunks, for every projection
+* splitSetSize = 500 => size of the splits, i.e. how many rows
+* cutoffPermutations = 6 => number of permutations to calculate the cutoff
+
+```{r}
+head(result$RI) |>
+  knitr::kable(row.names = F)
+```
+
+As seen in @fig-mcfs_convergence, the rankings stabalize after around 1100 projections. Re-running the algorithm would likely not change the results much.
+
+```{r}
+#| fig-cap: MCFS convergence over 1500 permutations.
+#| label: fig-mcfs_convergence
+plot(result, type = "distances")
+```
+
+Classification matrix with rows as true and columns as predicted classes.
+
+Accuracy = sum(matrix diagonal) / sum(matrix)
+
+True positives = class / sum(row)
+
+False positives = class / sum(column)
+
+The top 30 results are mostly the same as in the paper (@tbl-ri_result_sorted).
+
+```{r}
+#| tbl-cap: Top 30 results.
+#| label: tbl-ri_result_sorted
+result2 <- result$RI[1:result$cutoff_value, ]
+result2 |>
+  dplyr::arrange(desc(RI)) |>
+  dplyr::filter(RI > 0.05) |>
+  head(30) |>
+  knitr::kable()
+```
+
+Difference between the lowest significant and highest non-significant gene is 1.420021 (@tbl-low_high).
+
+```{r}
+#| tbl-cap: Lowest significant and highest non-significant genes.
+#| label: tbl-low_high
+signif_low <- result2 |>
+  dplyr::arrange(RI) |>
+  dplyr::filter(RI > 0.05)
+nonSignif_high <- result$RI |>
+  dplyr::arrange(desc(RI)) |>
+  dplyr::filter(RI <= 0.05)
+low_high <- rbind(signif_low[1, ], nonSignif_high[1, ])
+low_high |>
+  knitr::kable()
+```
+
+The interdependency graph (@fig-interdependencies) shows the top 20 genes and how they depend on each other.
+
+```{r}
+#| fig-cap: Interdependency graph.
+#| label: fig-interdependencies
+gid <- build.idgraph(result, size = 20)
+plot.idgraph(gid, label_dist = 0.3)
+```
