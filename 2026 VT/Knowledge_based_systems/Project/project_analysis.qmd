@@ -12,7 +12,6 @@ library(rJava)
 library(rmcfs)
 library(RCy3)
 library(csVisuNet)
-# library(vsn)
 library(org.Mmu.eg.db)
 library(clusterProfiler)
 ```
@@ -22,7 +21,12 @@ library(clusterProfiler)
 Load the data.
 
 ```{r}
-df <- read.csv("Project3.csv")
+df <- read.csv(file.path(
+  #   "2026 VT",
+  #   "Knowledge_based_systems",
+  #   "Project",
+  "Project3.csv"
+))
 ```
 
 ```{r}
@@ -113,6 +117,7 @@ ros_full <- rosetta(
   roc = TRUE,
   clroc = "Prot",
   cvNum = 5,
+  reducer = "Genetic",
   JohnsonParam = JohnsonParam
 )
 ros_MCFS <- rosetta(
@@ -120,6 +125,7 @@ ros_MCFS <- rosetta(
   clroc = "Prot",
   roc = TRUE,
   cvNum = 5,
+  reducer = "Genetic",
   JohnsonParam = JohnsonParam
 )
 ```
@@ -229,6 +235,11 @@ vis_mfcs <- visunet(ros_MCFS$main)
 saveRDS(vis_mfcs, "vis_mcfs.RDS")
 ```
 
+```{r}
+# vis_mcfs <- readRDS("2026 VT/Knowledge_based_systems/Project/vis_mcfs_final.RDS")
+
+```
+
 Interdependency graph for MCFS dataset.
 
 ```{r}
@@ -297,6 +308,88 @@ vis_mcfs <- readRDS("vis_mcfs.RDS")
 How to do pathway analysis? 
 
 ```{r}
+# gsea_genes_full <- data.frame(
+#     gene = c(),
+#     regulation <- c(),
+#     decision <- c()
+# )
+gsea_genes_full <- c(
+  "LOC109910387",
+  "LOC114672915",
+  "KIR3DL0",
+  "CD300LD",
+  "ENSMMUG00000064369",
+  "ENSMMUG00000053012",
+  "VSTM1",
+  "X00000037843",
+  "AZU1",
+  "ENSMMUG00000058729",
+  "WDR41",
+  "C5H4orf45",
+  "ULK4",
+  "SMIM2",
+  "CDH20"
+)
+gsea_genes_mcfs <- c(
+  "KIR3DL0",
+  "ENSMMUG00000037843",
+  "CDH20",
+  "SDK2",
+  "ENSMMUG00000053274",
+  "CDH20",
+  "F5",
+  "KIR3DL0"
+)
+```
+
+ENSMMUG00000037843(low) -> Prot, (high) -> NonProt
+CDH20(high) -> Prot, (low) -> NonProt
+ENSMMUG00000053274(high) -> Prot, (low) -> NonProt
+SDK2(high) -> Prot, (low) -> NonProt
+LAD1(high) -> NonProt, (medium) -> Prot (combind SDK2)
+ENSMMUG00000064313
+
+```{r}
+gsea_genes_full_entrez <- bitr(
+  gsea_genes_full,
+  fromType = 'SYMBOL',
+  toType = c("ENTREZID"),
+  org.Mmu.eg.db
+)
+gsea_genes_mcfs_entrez <- bitr(
+  gsea_genes_mcfs,
+  fromType = 'SYMBOL',
+  toType = c("ENTREZID"),
+  org.Mmu.eg.db
+)
+```
+
+```{r}
+gsea_GO_full <- enrichGO(
+  gene = gsea_genes_full_entrez$ENTREZID,
+  OrgDb = org.Mmu.eg.db,
+  ont = "MF",
+  pvalueCutoff = 0.05,
+  readable = TRUE
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
 gene_entrez_full <- bitr(
   unique(as.character(vis_full$all$nodes$label)),
   fromType = 'SYMBOL',
@@ -326,6 +419,15 @@ genes_GO_mcfs <- groupGO(
   OrgDb = org.Mmu.eg.db,
   ont = "MF",
   level = 5,
+  readable = TRUE
+)
+```
+
+```{r}
+pathway_reactome_full <- enrichPathway(
+  gene = unique(gene_entrez_full$ENTREZID),
+  organism = "org.Mmu.eg.db",
+  pvalueCutoff = 0.05,
   readable = TRUE
 )
 ```
