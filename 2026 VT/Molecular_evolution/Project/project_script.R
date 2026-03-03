@@ -5,7 +5,12 @@ library(ggplot2)
 library(grid)
 
 # Read Newick string and create a 'phylo' object
-newick <- "((Red_bellied_piranha_TERF2:0.3133772440,Zebrafish_TERF2:0.4276226397):0.1544804504,((Clownfish_TERF2:0.1645114741,Midas_cichild_TERF2:0.2364769847):0.2620989260,Salmon_TERF2:0.3728182665):0.1868774299,Fox_TERF2:0.7079591245);"
+newick <- "((Red_bellied_piranha_TERF2:0.3133772440,
+Zebrafish_TERF2:0.4276226397):0.1544804504,
+((Clownfish_TERF2:0.1645114741,
+Midas_cichild_TERF2:0.2364769847):0.2620989260,
+Salmon_TERF2:0.3728182665):0.1868774299,
+Fox_TERF2:0.7079591245);"
 tr <- read.tree(text = newick)
 
 # Plot

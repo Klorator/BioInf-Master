@@ -1,9 +1,11 @@
 ---
-title: "TERF2 selection pressure analysis with focus on Atlantic salmon"
+title: "TERF2 Selection Pressure Analysis With Focus on Atlantic Salmon"
 subtitle: "Molecular evolution"
 author: "Rasmus Hammar"
-format: typst
-bibliography: references.bib
+format: 
+    typst:
+        citeproc: true
+bibliography: MolEvoReferences.bib
 csl: ibg.csl
 nocite: "@*"
 ---
@@ -17,13 +19,13 @@ result_dNdS <- readRDS("result_dNdS.rds")
 
 ## Introduction
 
-Telomeres are a region found at the ends of eucaryotic chromosomes. They consist of 5'-TTAGGG-3' tandem repeats with a single-stranded overhang [@stanselTloopAssemblyVitro2001] and serve to protect the chromosome from DNA reparation mechanism and fusing with other chromosomes [@ancelinRoleTelomericDNAbinding1998; @delangeProtectionMammalianTelomeres2002]. The telomeric repeat binding factor 2 (TERF2) is a protein coding gene mainly involved in maintaining telomere length and, above all, protecting chromosome ends by means of capping to protect from 3' flap nucleases [@ancelinRoleTelomericDNAbinding1998; @delangeProtectionMammalianTelomeres2002; @hockemeyerPOT1ProtectsTelomeres2005]. Apart from binding to telomeric DNA itself, TERF2 forms a complex with and recruits multiple other proteins [@kimTIN2MediatesFunctions2004; @delangeProtectionMammalianTelomeres2002] to both regulate the telomere length [@smogorzewskaControlHumanTelomere2000] and bundle the telomere into t-loops [@stanselTloopAssemblyVitro2001]. 
+Telomeres are a region found at the ends of eucaryotic chromosomes. They consist of 5'-TTAGGG-3' tandem repeats with a single-stranded overhang [@stanselTloopAssemblyVitro2001] and serve to protect the chromosome from DNA reparation mechanism and fusing with other chromosomes [@ancelinRoleTelomericDNAbinding1998; @delangeProtectionMammalianTelomeres2002]. The telomeric repeat binding factor 2 (TERF2) is a protein coding gene mainly involved in maintaining telomere length and, above all, protecting chromosome ends by means of capping to protect from 3' flap nucleases [@ancelinRoleTelomericDNAbinding1998; @delangeProtectionMammalianTelomeres2002; @hockemeyerPOT1ProtectsTelomeres2005]. Apart from binding to telomeric DNA itself, TERF2 forms a complex with, and recruits, multiple other proteins [@kimTIN2MediatesFunctions2004; @delangeProtectionMammalianTelomeres2002] to both regulate the telomere length [@smogorzewskaControlHumanTelomere2000] and bundle the telomere into t-loops [@stanselTloopAssemblyVitro2001]. 
 
-This study focuses on investigating the selection preassure on the TERF2 gene across five species of teleosts with a special focus on the Atlantic salmon (_Salmo salar_). 
+This study focuses on investigating the selection preassure on the TERF2 gene across five species of teleosts, Midas cichild (_Amphilophus citrinellus_), Clown anemonefish (_Amphiprion ocellaris_), Atlantic salmon (_Salmo salar_), Zebrafish (_Danio rerio_), and Red-bellied piranha (_Pygocentrus nattereri_), with Red fox (_Vulpes vulpes_) as outgroup and a special focus on the Atlantic salmon. 
 
 ## Method
 
-Gene sequences were obtained from Ensembl [@dyerEnsembl20252025] and aligned using PRANK [@loytynojaPhylogenyawareAlignmentPRANK2014] with a codon-aware method. A phylogenetic tree was constructed with IQ-TREE (version 1.6.12) [@trifinopoulosWIQTREEFastOnline2016]. Selection preassure was estimated using codeml from PAML [@yangPAML4Phylogenetic2007] according to models in @tbl-models and models were compared using likelihood ratio tests (LRT).
+Protein coding gene sequences were obtained from Ensembl [@dyerEnsembl20252025] and aligned using PRANK [@loytynojaPhylogenyawareAlignmentPRANK2014] with a codon-aware method. Phylogenetic trees were constructed with IQ-TREE (version 1.6.12) [@trifinopoulosWIQTREEFastOnline2016]. Selection preassure was estimated using codeml from PAML [@yangPAML4Phylogenetic2007] according to models in @tbl-models and models were compared using likelihood ratio tests (LRT).
 
 ```{r}
 #| echo: false
@@ -53,23 +55,59 @@ Github Copilot with model GPT-5 mini was used for code compleation and generatin
 
 ## Results
 
-Models used for estimating selection preassure on the TERF2 gene (@tbl-models) simulate neutral evolution (Model A, null hypothesis), similar selection preassure across species (Model B) and different selection preassure per species (Model C). Comparing models A and B indicated a difference between models (p = `{r} format(result_LRT$Model_A_vs_B$p_value, format = "f", digits = 3)`), and model B against C indicated no difference.
+Models used for estimating selection preassure on the TERF2 gene (@tbl-models) simulated neutral evolution (Model A, null hypothesis), similar selection preassure across species (Model B) and different selection preassure per species (Model C). Comparing models A and B, LRT indicated a difference between models (p = `{r} format(result_LRT$Model_A_vs_B$p_value, format = "f", digits = 3)`), and model B against C indicated no difference.
 
+Model B had an estimated dN/dS = `{r} format(result_dNdS$Model_B, format = "f", digits = 3)`. The estimated branch lengths ranged within 0.1 to 0.5 for all teleosts, with the red fox being the farthest removed with a branch length of 0.708 (@fig-phylo_tree). The atlantic salmon had a branch length of 0.373 being closest related to the Midas cichild and Clown anemonefish.
 
-
-![Phylogenetic tree based on 1:1 orthologs of the TERF2 gene.](phylo_tree_ggtree.png)
-
-
+![Phylogenetic tree based on 1:1 orthologs of the TERF2 gene from six species.](phylo_tree_ggtree.png){#fig-phylo_tree}
 
 ## Discussion
 
-Seeing as a dN/dS not fixed at one (i.e. allowed to vary) resulted in a better model (Model B), there is some form of selection on the TERF2 gene. A dN/dS < 1 indicates a purifying selection and that the TERF2 function is likely vital to an individuals viability.
+Seeing as a dN/dS not fixed at one resulted in a better model (Model B, @tbl-models), there is some form of selection on the TERF2 gene. A dN/dS < 1 indicates a purifying selection and that any visible mutations are likely in non-conserved regions. It also implies that the TERF2 function is vital to organism viability in general. This is reasonable considering the importance of maintaining chromosome integrity for cell viability and the ability to produce viable offspring.
 
-
-::: {.page-break}
-:::
+{{<pagebreak>}}
 
 ## References
 
+::: {#refs}
+:::
+
+{{<pagebreak>}}
 
 ## Appendix
+
+### Terminal workflow
+
+With protein coding sequences saved to the remote server, the following commands were used to align sequences, construct phylogenetic trees, and build models.
+
+```bash
+cat *.fa > MS_TERF2.fa
+prank -d=MS_TERF2.fa -codon -o=MSA_TERF2
+iqtree -s MSA_TERF2.best.fas
+iqtree -s MSA_TERF2.best.fas -o Fox_TERF2 -redo
+```
+
+The Newick tree output from IQ-TREE was extracted and used in the R-script to generate @fig-phylo_tree with ggtree.
+
+```bash
+prank -d=MSA_TERF2.best.fas -convert -f=paml -o=MSA_TERF2_PAML
+```
+
+Configuration file for codeml was modified between models A, B, and C according to @tbl-models and with corresponding output file names; codeml was run three times.
+
+```bash
+codeml codeml.ctl
+```
+
+Model files were inspected and relevant values extracted to the R-script for LRT calculations.
+
+### R code
+
+```{r}
+#| echo: false
+#| results: asis
+txt <- readLines("project_script.R", warn = FALSE)
+cat("```r\n")
+cat(paste(txt, collapse = "\n"))
+cat("\n```\n")
+```
